@@ -101,7 +101,7 @@ const ResetPassword: React.FC = () => {
 						<div className='flex justify-content--between align-items--center'>
 							<div>
 								<button
-									className='reset-password-btn login-btn width--full font-size--lg text--uppercase text--white border-radius--default no--border bg--primary'
+									className='reset-password-btn login-btn'
 									type='submit'
 								>
 									Save Password

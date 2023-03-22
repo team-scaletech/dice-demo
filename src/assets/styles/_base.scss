@@ -6,13 +6,14 @@
 
 * {
 	font-family: $font-rubik;
-	font-size: $font-size-browser-default;
 }
 
 body {
 	@include margin(0);
 	@include padding(0);
-	background-color: $black;
+	background-image: url('../../assets/images/image.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
 	font-size: $font-size-browser-default;
 	font-weight: $font-regular;
 	color: $white;
@@ -88,6 +89,7 @@ button::-moz-focus-inner {
 
 button {
 	border: 0;
+
 	&:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;

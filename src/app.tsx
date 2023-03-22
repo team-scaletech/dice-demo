@@ -11,18 +11,18 @@ import { IState } from 'shared/interface/state';
 const App: React.FC = () => {
 	const isLogin: boolean = useSelector((state: IState) => state.auth.isLogin);
 
-	if (isLogin) {
-		return <></>;
-	} else {
-		return (
-			<Routes>
-				<Route path='/login' element={<Login />} />
-				<Route path='/forgot-password' element={<ForgotPassword />} />
-				<Route path='/reset-password/:token' element={<ResetPassword />} />
-				<Route path='*' element={<Navigate replace to='/login' />} />
-			</Routes>
-		);
-	}
+	// if (isLogin) {
+	// 	return <></>;
+	// } else {
+	return (
+		<Routes>
+			<Route path='/login' element={<Login />} />
+			<Route path='/forgot-password' element={<ForgotPassword />} />
+			<Route path='/reset-password/:token' element={<ResetPassword />} />
+			<Route path='*' element={<Navigate replace to='/login' />} />
+		</Routes>
+	);
+	// }
 };
 
 export default App;

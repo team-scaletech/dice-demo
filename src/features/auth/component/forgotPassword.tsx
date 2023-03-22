@@ -27,49 +27,50 @@ const ForgotPassword: React.FC = () => {
 
 	return (
 		<div className='flex justify-content--center align-items--center flex--column height--full-viewport'>
-			<p className='auth-title text--center text--white font-size--28'>Forgot Password</p>
-			<div className='auth_form form width--50'>
-				<Formik
-					initialValues={initialValues}
-					onSubmit={onSubmit}
-					validationSchema={forgotPasswordFormValidationSchema}
-					validateOnChange
-					validateOnBlur
-					validateOnMount
-				>
-					<Form>
-						<div className='form-item mb--50 position--relative'>
-							<label className='login-label'>Email</label>
-							<Field
-								name='email'
-								type='email'
-								className='input-field font--regular width--full mt--10 border-radius--sm bg--grey-300 text--white'
-								autoComplete='off'
-								placeholder='Email Address'
-							/>
-							<ErrorMessage
-								name='email'
-								component='span'
-								className='text--red-400 font-size--xxs pl--10 error-message position--absolute'
-							/>
-						</div>
-						<button
-							className='login-btn width--full font-size--lg text--uppercase text--white border-radius--default no--border bg--primary'
-							type='submit'
-							disabled={loading}
-						>
-							Send Mail
-						</button>
-						<button
-							className='login-btn width--full font-size--lg text--uppercase text--white border-radius--default no--border bg--primary mt--15'
-							type='button'
-							disabled={loading}
-							onClick={() => navigate('/login')}
-						>
-							Back To Login
-						</button>
-					</Form>
-				</Formik>
+			<div className='login-wrapper border-radius--lg width--30'>
+				<p className='auth-title line-height--45 text--center'>Forgot Password</p>
+				<div className='auth_form form'>
+					<Formik
+						initialValues={initialValues}
+						onSubmit={onSubmit}
+						validationSchema={forgotPasswordFormValidationSchema}
+						validateOnChange
+						validateOnBlur
+						validateOnMount
+					>
+						<Form>
+							<div className='form-item mt--50 mb--50 position--relative'>
+								<Field
+									name='email'
+									type='email'
+									className='input-field mt--10'
+									autoComplete='off'
+									placeholder='Enter your email address'
+								/>
+								<ErrorMessage
+									name='email'
+									component='span'
+									className='text--red-400 font-size--xxs pl--10 error-message position--absolute'
+								/>
+							</div>
+							<button
+								className='login-btn'
+								type='submit'
+								disabled={loading}
+							>
+								Send Mail
+							</button>
+							<button
+								className='login-btn guest-btn mt--15'
+								type='button'
+								disabled={loading}
+								onClick={() => navigate('/login')}
+							>
+								Back To Login
+							</button>
+						</Form>
+					</Formik>
+				</div>
 			</div>
 		</div>
 	);
