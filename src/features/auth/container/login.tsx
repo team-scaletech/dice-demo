@@ -12,6 +12,7 @@ const Login: React.FC = () => {
 			preserveAspectRatio: 'xMidYMid slice'
 		}
 	};
+
 	return (
 		<div className='flex justify-content--around align-items--center height--full-viewport'>
 			<div className='login-wrapper border-radius--lg width--30'>

@@ -1,14 +1,16 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Formik, FormikValues, Field, ErrorMessage, Form } from 'formik';
+
 import * as Yup from 'yup';
+import { Formik, FormikValues, Field, ErrorMessage, Form } from 'formik';
+import { v4 as uuidv4 } from 'uuid';
 
 import AuthService from 'shared/services/auth.service';
 import HttpService from 'shared/services/http.service';
 import { API_CONFIG } from 'shared/constants/api';
 import { createAction } from 'shared/util/utility';
-import { HidePasswordIcon, ShowPasswordIcon } from 'shared/components/icons/icons';
+import { EmailIcon, HidePasswordIcon, ShowPasswordIcon } from 'shared/components/icons/icons';
 import { PASSWORD_REGEX } from 'shared/constants';
 import * as actionTypes from 'store/actionTypes';
 
@@ -16,8 +18,10 @@ const LoginForm: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [signUp, setSignUp] = useState(false);
+	const [uuid, setUuid] = useState('');
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const onSubmit = useCallback(
 		(values: FormikValues) => {
@@ -33,6 +37,7 @@ const LoginForm: React.FC = () => {
 					res.data && AuthService.setAuthData(res.data.token);
 					dispatch(createAction(actionTypes.AUTH_SUCCESS));
 					dispatch(createAction(actionTypes.UPDATE_USER_DATA, res.data));
+					navigate('/')
 				})
 				.catch((err: Error) => {
 					setLoading(false);
@@ -42,6 +47,19 @@ const LoginForm: React.FC = () => {
 		},
 		[dispatch]
 	);
+
+
+	const handleGuestUser = () => {
+		const uuid = localStorage.getItem('uuid');
+		if (!uuid) {
+			const generateUuid = uuidv4();
+			localStorage.setItem('uuid', generateUuid);
+			setUuid(generateUuid);
+		} else {
+			setUuid(uuid);
+		}
+		navigate('/')
+	}
 
 	return (
 		<Formik
@@ -75,6 +93,11 @@ const LoginForm: React.FC = () => {
 						autoComplete='off'
 						placeholder='Email Address'
 					/>
+					<div
+						className='password-icon email-icon position--absolute  flex cursor--pointer align-items--center'
+					>
+						<EmailIcon />
+					</div>
 					<ErrorMessage
 						name='email'
 						component='p'
@@ -126,6 +149,7 @@ const LoginForm: React.FC = () => {
 					disabled={loading}
 					className='login-btn guest-btn mt--30'
 					type='button'
+					onClick={handleGuestUser}
 				>
 					Continue As Guest
 				</button>
