@@ -33,11 +33,11 @@ const LoginForm: React.FC = () => {
 			setLoading(true);
 			HttpService.post(API_CONFIG.path.login, params)
 				.then((res) => {
-					setLoading(false);
+					console.log(".then ~ res:", res)
+					// setLoading(false);
 					res.data && AuthService.setAuthData(res.data.token);
 					dispatch(createAction(actionTypes.AUTH_SUCCESS));
 					dispatch(createAction(actionTypes.UPDATE_USER_DATA, res.data));
-					navigate('/')
 				})
 				.catch((err: Error) => {
 					setLoading(false);
@@ -86,19 +86,19 @@ const LoginForm: React.FC = () => {
 				</div>}
 				<div className='form-item mb--25 position--relative'>
 					<Field
-						name='email'
-						type='email'
+						name='username'
+						type='username'
 						className='input-field'
 						autoComplete='off'
-						placeholder='Email Address'
+						placeholder='Enter Your Name'
 					/>
-					<div
+					{/* <div
 						className='email-icon position--absolute  flex cursor--pointer align-items--center'
 					>
 						<EmailIcon />
-					</div>
+					</div> */}
 					<ErrorMessage
-						name='email'
+						name='username'
 						component='p'
 						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
 					/>
@@ -134,7 +134,7 @@ const LoginForm: React.FC = () => {
 				>
 					{signUp ? 'Sign Up' : 'Login'}
 				</button>
-				<div className='flex align-items--center justify-content--end mt--10'>
+				{/* <div className='flex align-items--center justify-content--end mt--10'>
 					<Link
 						to={{
 							pathname: '/forgot-password'
@@ -143,7 +143,7 @@ const LoginForm: React.FC = () => {
 					>
 						{!signUp && 'Forgot Password?'}
 					</Link>
-				</div>
+				</div> */}
 				<button
 					disabled={loading}
 					className='login-btn guest-btn mt--30'
@@ -171,7 +171,8 @@ const initialValues = {
 };
 
 const loginFormValidationSchema = Yup.object().shape({
-	email: Yup.string().email('Please Enter Valid Email').required('Please Enter Email').strict(true),
+	// email: Yup.string().email('Please Enter Valid Email').required('Please Enter Email').strict(true),
+	username: Yup.string().required('UserName is Required').strict(true),
 	password: Yup.string()
 		.required('Please Enter Password')
 		.matches(PASSWORD_REGEX, 'Must Contain 8 Characters, One Number and One Special Case Character ')
