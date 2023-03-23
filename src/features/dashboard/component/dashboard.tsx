@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import CustomModal from 'shared/modal/modal';
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
@@ -101,13 +100,11 @@ const Dashboard = () => {
                                         className={`dice dice--${index + 1}`}
                                         key={index}>
                                         <div
-                                            className={`face face--small-dice face--background ${data} ${
-                                                index + 1 === guessVal &&
+                                            className={`face face--small-dice face--background ${data} ${index + 1 === guessVal &&
                                                 'face--active '
-                                            } ${
-                                                index + 1 === diceVal &&
+                                                } ${index + 1 === diceVal &&
                                                 'face--win'
-                                            }`}
+                                                }`}
                                             onClick={() =>
                                                 setGuessVal(index + 1)
                                             }></div>
@@ -119,23 +116,21 @@ const Dashboard = () => {
                 </div>
 
                 <div className='btn-container width--full flex align-items--center '>
-                    <div className='bet-wrapper flex '>
-                        <button className='minus flex justify-content--center align-items--center '>
-                            -
-                        </button>
-
-                        <div className='bet-amount'>
-                            <span className='flex flex--wrap justify-content--center align-items--center font-size--xs  '>
-                                BET
-                            </span>
-                            <p className='flex justify-content--center align-items--center font-size--lg font--semi-bold '>
+                    <div className='bet-wrapper text--center'>
+                        <p className='btn-title font-size--xxl mb--10'>
+                            BET
+                        </p>
+                        <div className='flex justify-content--center'>
+                            <button className='minus flex justify-content--center align-items--center mr--10'>
+                                -
+                            </button>
+                            <p className='bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold'>
                                 500.00
                             </p>
+                            <button className='minus flex justify-content--center align-items--center ml--10'>
+                                +
+                            </button>
                         </div>
-
-                        <button className='minus flex justify-content--center align-items--center'>
-                            +
-                        </button>
                     </div>
                     <div className='play-wrapper flex justify-content--center align-items--center '>
                         <button className='play-btn'>
@@ -152,19 +147,19 @@ const Dashboard = () => {
                             )}
                         </button>
                     </div>
-                    <div className='bet-wrapper win-wrapper flex justify-content--center align-items--center '>
-                        <div className='bet-amount'>
-                            <span className='flex flex--wrap justify-content--center align-items--center font-size--xs  '>
-                                WIN
-                            </span>
-                            <p className='flex justify-content--center align-items--center font-size--lg font--semi-bold '>
+                    <div className='bet-wrapper text--center'>
+                        <p className='btn-title font-size--xxl mb--10'>
+                            WIN
+                        </p>
+                        <div className='flex justify-content--center'>
+                            <p className='bet-amount flex justify-content--center align-items--center font-size--lg font--semi-bold '>
                                 600.00
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
