@@ -26,18 +26,18 @@ const LoginForm: React.FC = () => {
 	const onSubmit = useCallback(
 		(values: FormikValues) => {
 			const params = {
-				email: values.email,
-				password: values.password
+				username: 'hetvi',
+				password: '1234'
 			};
 
 			setLoading(true);
 			HttpService.post(API_CONFIG.path.login, params)
 				.then((res) => {
-					console.log(".then ~ res:", res)
-					// setLoading(false);
+					setLoading(false);
 					res.data && AuthService.setAuthData(res.data.token);
 					dispatch(createAction(actionTypes.AUTH_SUCCESS));
 					dispatch(createAction(actionTypes.UPDATE_USER_DATA, res.data));
+					navigate('/')
 				})
 				.catch((err: Error) => {
 					setLoading(false);
@@ -64,13 +64,13 @@ const LoginForm: React.FC = () => {
 		<Formik
 			initialValues={initialValues}
 			onSubmit={onSubmit}
-			validationSchema={loginFormValidationSchema}
+			// validationSchema={loginFormValidationSchema}
 			validateOnChange
 			validateOnBlur
 			validateOnMount
 		>
 			<Form>
-				{signUp && <div className='form-item mb--25 position--relative'>
+				{/* {signUp && <div className='form-item mb--25 position--relative'>
 					<Field
 						name='username'
 						type='text'
@@ -83,20 +83,17 @@ const LoginForm: React.FC = () => {
 						component='p'
 						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
 					/>
-				</div>}
+				</div>} */}
 				<div className='form-item mb--25 position--relative'>
 					<Field
+						readOnly
 						name='username'
 						type='username'
 						className='input-field'
 						autoComplete='off'
 						placeholder='Enter Your Name'
+						value='hetvi'
 					/>
-					{/* <div
-						className='email-icon position--absolute  flex cursor--pointer align-items--center'
-					>
-						<EmailIcon />
-					</div> */}
 					<ErrorMessage
 						name='username'
 						component='p'
@@ -105,11 +102,13 @@ const LoginForm: React.FC = () => {
 				</div>
 				<div className='form-item mb--45 position--relative'>
 					<Field
+						readOnly
 						name='password'
 						type={showPassword ? 'text' : 'password'}
 						className='input-field'
 						autoComplete='off'
 						placeholder='Password'
+						value='1234'
 					/>
 					<div
 						className='password-icon position--absolute  flex cursor--pointer align-items--center'
@@ -144,7 +143,7 @@ const LoginForm: React.FC = () => {
 						{!signUp && 'Forgot Password?'}
 					</Link>
 				</div> */}
-				<button
+				{/* <button
 					disabled={loading}
 					className='login-btn guest-btn mt--30'
 					type='button'
@@ -159,7 +158,7 @@ const LoginForm: React.FC = () => {
 						className='cursor--pointer forgot-password no--bg pl--5 font-size--default text-decoration--underline text--white'>
 						{signUp ? 'LOGIN' : 'SIGN UP'}
 					</div>
-				</div>
+				</div> */}
 			</Form>
 		</Formik >
 	);
