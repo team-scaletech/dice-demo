@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Lottie from 'react-lottie';
+import * as yellowDiceAnimation from '../../../assets/lottiles/yellowDiceAnimation.json';
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
@@ -6,7 +8,13 @@ const Dashboard = () => {
     const [transFormStyle, setTransFormStyle] = useState('');
     const [diceVal, setDiceVal] = useState(0);
     const [isPlay, setIsPlay] = useState(false);
-    const [guessVal, setGuessVal] = useState(0);
+    const [guessVal, setGuessVal] = useState<number>(0);
+
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: yellowDiceAnimation,
+    };
 
     const handleDiceClick = () => {
         setIsPlay(true);
@@ -64,16 +72,21 @@ const Dashboard = () => {
         <div className='main-container flex'>
             <div className='dashboard-wrapper width--full'>
                 <div className=' header-wrapper flex justify-content--between align-items--center'>
-                    <p className='text--center ml--20'>
-                        Welcome to Dice game,Smith
-                    </p>
+                    <div className='mt--30'>
+                        <Lottie
+                            options={defaultOptions}
+                            height={100}
+                            width={100}
+                        />
+                    </div>
+
+                    <div className='curve-wrapper'>
+                        <button className='curve-btn'>2500</button>
+                    </div>
                     <div className='flex '>
                         <button className='setting-btn mr--20'>
                             <i className=' setting-icon fa fa-gear'></i>
                         </button>
-                        {/*<button className='logout-btn flex justify-content--center align-items--center border-radius--lg '>
-                                Logout
-                            </button>*/}
                     </div>
                 </div>
 
@@ -100,11 +113,13 @@ const Dashboard = () => {
                                         className={`dice dice--${index + 1}`}
                                         key={index}>
                                         <div
-                                            className={`face face--small-dice face--background ${data} ${index + 1 === guessVal &&
+                                            className={`face face--small-dice face--background ${data} ${
+                                                index + 1 === guessVal &&
                                                 'face--active '
-                                                } ${index + 1 === diceVal &&
+                                            } ${
+                                                index + 1 === diceVal &&
                                                 'face--win'
-                                                }`}
+                                            }`}
                                             onClick={() =>
                                                 setGuessVal(index + 1)
                                             }></div>
@@ -117,10 +132,8 @@ const Dashboard = () => {
 
                 <div className='btn-container width--full flex align-items--center '>
                     <div className='bet-wrapper text--center'>
-                        <p className='btn-title font-size--xxl mb--10'>
-                            BET
-                        </p>
-                        <div className='flex justify-content--center'>
+                        <p className='btn-title font-size--xxl mb--10'>BET</p>
+                        <div className='flex justify-content--end'>
                             <button className='minus flex justify-content--center align-items--center mr--10'>
                                 -
                             </button>
@@ -132,12 +145,18 @@ const Dashboard = () => {
                             </button>
                         </div>
                     </div>
-                    <div className='play-wrapper flex justify-content--center align-items--center '>
-                        <button className='play-btn'>
+
+                    <div
+                        className={`${
+                            guessVal <= 0 && ' no-pointer-events  '
+                        } play-wrapper flex justify-content--center align-items--center `}>
+                        <button
+                            className='play-btn'
+                            disabled={guessVal <= 0}
+                            onClick={handleDiceClick}>
                             {!isPlay && (
                                 <i
                                     className='fa fa-play play flex justify-content--center align-items--center '
-                                    onClick={handleDiceClick}
                                     id='play'></i>
                             )}
                             {isPlay && (
@@ -147,11 +166,11 @@ const Dashboard = () => {
                             )}
                         </button>
                     </div>
-                    <div className='bet-wrapper text--center'>
-                        <p className='btn-title font-size--xxl mb--10'>
+                    <div className='bet-wrapper text--start'>
+                        <p className='win-btn-title font-size--xxl mb--10'>
                             WIN
                         </p>
-                        <div className='flex justify-content--center'>
+                        <div className='flex justify-content--start'>
                             <p className='bet-amount flex justify-content--center align-items--center font-size--lg font--semi-bold '>
                                 600.00
                             </p>
@@ -159,7 +178,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

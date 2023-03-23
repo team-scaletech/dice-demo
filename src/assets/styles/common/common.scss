@@ -1333,3 +1333,15 @@
     color: getColor($red, 200);
     @include marginTop(10px);
 }
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.no-pointer-events {
+    pointer-events: none;
+}
