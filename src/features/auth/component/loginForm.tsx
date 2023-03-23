@@ -1,21 +1,27 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Formik, FormikValues, Field, ErrorMessage, Form } from 'formik';
+
 import * as Yup from 'yup';
+import { Formik, FormikValues, Field, ErrorMessage, Form } from 'formik';
+import { v4 as uuidv4 } from 'uuid';
 
 import AuthService from 'shared/services/auth.service';
 import HttpService from 'shared/services/http.service';
 import { API_CONFIG } from 'shared/constants/api';
 import { createAction } from 'shared/util/utility';
-import { HidePasswordIcon, ShowPasswordIcon } from 'shared/components/icons/icons';
+import { EmailIcon, HidePasswordIcon, ShowPasswordIcon } from 'shared/components/icons/icons';
 import { PASSWORD_REGEX } from 'shared/constants';
 import * as actionTypes from 'store/actionTypes';
 
 const LoginForm: React.FC = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [signUp, setSignUp] = useState(false);
+	const [uuid, setUuid] = useState('');
+
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const onSubmit = useCallback(
 		(values: FormikValues) => {
@@ -31,6 +37,7 @@ const LoginForm: React.FC = () => {
 					res.data && AuthService.setAuthData(res.data.token);
 					dispatch(createAction(actionTypes.AUTH_SUCCESS));
 					dispatch(createAction(actionTypes.UPDATE_USER_DATA, res.data));
+					navigate('/')
 				})
 				.catch((err: Error) => {
 					setLoading(false);
@@ -40,6 +47,18 @@ const LoginForm: React.FC = () => {
 		},
 		[dispatch]
 	);
+
+
+	const handleGuestUser = () => {
+		const uuid = localStorage.getItem('uuid');
+		if (!uuid) {
+			const generateUuid = uuidv4();
+			localStorage.setItem('uuid', generateUuid);
+			setUuid(generateUuid);
+		} else {
+			setUuid(uuid);
+		}
+	}
 
 	return (
 		<Formik
@@ -51,25 +70,44 @@ const LoginForm: React.FC = () => {
 			validateOnMount
 		>
 			<Form>
+				{signUp && <div className='form-item mb--25 position--relative'>
+					<Field
+						name='username'
+						type='text'
+						className='input-field'
+						autoComplete='off'
+						placeholder='Enter Your Name'
+					/>
+					<ErrorMessage
+						name='username'
+						component='p'
+						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
+					/>
+				</div>}
 				<div className='form-item mb--25 position--relative'>
 					<Field
 						name='email'
 						type='email'
-						className='input-field font--regular width--full border-radius--sm bg--grey-300 text--white'
+						className='input-field'
 						autoComplete='off'
 						placeholder='Email Address'
 					/>
+					<div
+						className='email-icon position--absolute  flex cursor--pointer align-items--center'
+					>
+						<EmailIcon />
+					</div>
 					<ErrorMessage
 						name='email'
 						component='p'
-						className='text--red-400 font-size--xxs pl--10 error-message mt--10'
+						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
 					/>
 				</div>
-				<div className='form-item mb--25 position--relative'>
+				<div className='form-item mb--45 position--relative'>
 					<Field
 						name='password'
 						type={showPassword ? 'text' : 'password'}
-						className='input-field font-regular width--full border-radius--sm bg--grey-300 text--white'
+						className='input-field'
 						autoComplete='off'
 						placeholder='Password'
 					/>
@@ -80,34 +118,50 @@ const LoginForm: React.FC = () => {
 						{showPassword ? (
 							<ShowPasswordIcon className='fill--comet' />
 						) : (
-							<HidePasswordIcon className='fill--white' />
+							<HidePasswordIcon />
 						)}
 					</div>
 					<ErrorMessage
 						name='password'
 						component='p'
-						className='text--red-400 font-size--xxs pl--10 error-message mt--10'
+						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
 					/>
 				</div>
-				<div className='flex align-items--center justify-content--end mb--15'>
+				<button
+					disabled={loading}
+					className='login-btn'
+					type='submit'
+				>
+					{signUp ? 'Sign Up' : 'Login'}
+				</button>
+				<div className='flex align-items--center justify-content--end mt--10'>
 					<Link
 						to={{
 							pathname: '/forgot-password'
 						}}
-						className='forgot-password font-size--default text-decoration--underline text--primary'
+						className='forgot-password font-size--default text-decoration--underline text--white'
 					>
-						Forgot Password?
+						{!signUp && 'Forgot Password?'}
 					</Link>
 				</div>
 				<button
 					disabled={loading}
-					className='login-btn width--full font-size--lg text--uppercase text--white border-radius--default no--border bg--primary'
-					type='submit'
+					className='login-btn guest-btn mt--30'
+					type='button'
+					onClick={handleGuestUser}
 				>
-					Login
+					Continue As Guest
 				</button>
+				<div className='flex align-items--center justify-content--center mt--10 pt--10'>
+					{signUp ? 'Already a user ?' : 'Need an account ?'}
+					<div
+						onClick={() => setSignUp(!signUp)}
+						className='cursor--pointer forgot-password no--bg pl--5 font-size--default text-decoration--underline text--white'>
+						{signUp ? 'LOGIN' : 'SIGN UP'}
+					</div>
+				</div>
 			</Form>
-		</Formik>
+		</Formik >
 	);
 };
 
