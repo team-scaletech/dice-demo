@@ -1,17 +1,24 @@
 import { useState } from 'react';
+import CustomModal from 'shared/modal/modal';
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
-    const [dice, setDice] = useState('');
+    const [diceAnimation, setDiceAnimation] = useState('');
     const [transFormStyle, setTransFormStyle] = useState('');
-    const [diceVal, setDiceVal] = useState(1);
+    const [diceVal, setDiceVal] = useState(0);
+    const [isPlay, setIsPlay] = useState(false);
+    const [guessVal, setGuessVal] = useState(0);
 
     const handleDiceClick = () => {
+        setIsPlay(true);
         const random = Math.floor(Math.random() * 7);
 
         if (random >= 1 && random <= 6) {
-            setDice('rolling 4s');
-            setDiceVal(random);
+            setDiceAnimation('rolling 4s');
+
+            setTimeout(() => {
+                setDiceVal(random);
+            }, 4550);
             rollDice(random);
         } else {
             handleDiceClick();
@@ -48,7 +55,8 @@ const Dashboard = () => {
                 default:
                     break;
             }
-            setDice('none');
+            setDiceAnimation('none');
+            setIsPlay(false);
             setTransFormStyle(transFormStyle);
         }, 4050);
     };
@@ -56,12 +64,17 @@ const Dashboard = () => {
     return (
         <div className='main-container flex'>
             <div className='dashboard-wrapper width--full'>
-                <div className='flex justify-content--between'>
-                    <p className='text--center'>Welcome to Dice game,Smith</p>
-                    <div className='flex'>
-                        <button className='logout-btn flex justify-content--center align-items--center border-radius--lg '>
-                            Logout
+                <div className=' header-wrapper flex justify-content--between align-items--center'>
+                    <p className='text--center ml--20'>
+                        Welcome to Dice game,Smith
+                    </p>
+                    <div className='flex '>
+                        <button className='setting-btn mr--20'>
+                            <i className=' setting-icon fa fa-gear'></i>
                         </button>
+                        {/*<button className='logout-btn flex justify-content--center align-items--center border-radius--lg '>
+                                Logout
+                            </button>*/}
                     </div>
                 </div>
 
@@ -72,57 +85,38 @@ const Dashboard = () => {
                                 className='dice'
                                 style={{
                                     transform: transFormStyle,
-                                    animation: dice,
+                                    animation: diceAnimation,
                                 }}>
-                                <div className='face front'></div>
-                                <div className='face back'></div>
-                                <div className='face top'></div>
-                                <div className='face bottom'></div>
-                                <div className='face right'></div>
-                                <div className='face left'></div>
+                                {dice.map((data) => (
+                                    <div
+                                        className={`face ${data} `}
+                                        key={data}
+                                    />
+                                ))}
                             </div>
 
                             <div className='dice-side-wrapper flex  mt--50 '>
-                                <div className='dice dice--1'>
-                                    <div className='face front'></div>
-                                </div>
-                                <div className='dice dice--2'>
-                                    <div className='face top'></div>
-                                </div>
-                                <div className='dice dice--3'>
-                                    <div className='face left '></div>
-                                </div>
-                                <div className='dice dice--4'>
-                                    <div className='face right'></div>
-                                </div>
-                                <div className='dice dice--5'>
-                                    <div className='face bottom'></div>
-                                </div>
-                                <div className='dice dice--6'>
-                                    <div className='face back'></div>
-                                </div>
+                                {staticDice.map((data, index: number) => (
+                                    <div
+                                        className={`dice dice--${index + 1}`}
+                                        key={index}>
+                                        <div
+                                            className={`face face--small-dice face--background ${data} ${
+                                                index + 1 === guessVal &&
+                                                'face--active '
+                                            } ${
+                                                index + 1 === diceVal &&
+                                                'face--win'
+                                            }`}
+                                            onClick={() =>
+                                                setGuessVal(index + 1)
+                                            }></div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/*<div className=' btn-container width--full'>
-                    <div className=' button-wrapper flex justify-content--center mt--50'>
-                        <div className='bet-wrapper flex'>
-                            <button className='minus'>-</button>
-                            <button className='bet-amount'>Bet</button>
-                            <button className='plus'>+</button>
-                        </div>
-                        <div className='play-wrapper'>
-                            <button className='play' onClick={handleDiceClick}>
-                                play
-                            </button>
-                        </div>
-                        <div className='win-wrapper'>
-                            <button className='bet-amount'>win</button>
-                        </div>
-                    </div>
-                </div>*/}
 
                 <div className='btn-container width--full flex align-items--center '>
                     <div className='bet-wrapper flex '>
@@ -145,11 +139,17 @@ const Dashboard = () => {
                     </div>
                     <div className='play-wrapper flex justify-content--center align-items--center '>
                         <button className='play-btn'>
-                            <i
-                                className='fa fa-play play'
-                                onClick={handleDiceClick}
-                                id='play'></i>
-                            {/*<i className='fa fa-square pause' id='pause'></i>*/}
+                            {!isPlay && (
+                                <i
+                                    className='fa fa-play play flex justify-content--center align-items--center '
+                                    onClick={handleDiceClick}
+                                    id='play'></i>
+                            )}
+                            {isPlay && (
+                                <i
+                                    className='fa fa-square pause flex justify-content--center align-items--center'
+                                    id='pause'></i>
+                            )}
                         </button>
                     </div>
                     <div className='bet-wrapper win-wrapper flex justify-content--center align-items--center '>
@@ -167,5 +167,8 @@ const Dashboard = () => {
         </div>
     );
 };
+
+const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
+const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
 
 export default Dashboard;
