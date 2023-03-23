@@ -27,7 +27,7 @@ const ForgotPassword: React.FC = () => {
 
 	return (
 		<div className='flex justify-content--center align-items--center flex--column height--full-viewport'>
-			<div className='login-wrapper border-radius--lg width--30'>
+			<div className='login-wrapper border-radius--lg width--full'>
 				<p className='auth-title line-height--45 text--center'>Forgot Password</p>
 				<div className='auth_form form'>
 					<Formik

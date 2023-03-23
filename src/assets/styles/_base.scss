@@ -11,10 +11,12 @@
 body {
 	@include margin(0);
 	@include padding(0);
-	background-image: url('../../assets/images/image.jpg');
+
+	font-size: $font-size-browser-default;
+	background-image: url('../../assets/images/Background.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
-	font-size: $font-size-browser-default;
+	background-position: center;
 	font-weight: $font-regular;
 	color: $white;
 	scroll-behavior: smooth;

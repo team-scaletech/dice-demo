@@ -1,7 +1,8 @@
 import React from 'react';
 import Lottie from 'react-lottie';
-import LoginForm from '../component/loginForm';
+
 import diceAnimation from 'assets/lotties/diceAnimation.json';
+import LoginForm from '../component/loginForm';
 
 const Login: React.FC = () => {
 	const defaultOptions = {
@@ -15,12 +16,12 @@ const Login: React.FC = () => {
 
 	return (
 		<div className='flex justify-content--around align-items--center height--full-viewport'>
-			<div className='login-wrapper border-radius--lg width--30'>
-				<div className=''>
+			<div className='login-wrapper border-radius--lg width--full'>
+				<div>
 					<p className='auth-title text--center text--white font-size--40'>
 						Guess <span className='font-size--30'>&</span> Roll
 					</p>
-					<div className='no--margin'>
+					<div className='dice-animation no--margin'>
 						<Lottie options={defaultOptions} height={110} width={150} />
 					</div>
 				</div>
@@ -28,7 +29,7 @@ const Login: React.FC = () => {
 					<LoginForm />
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 };
 

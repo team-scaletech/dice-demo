@@ -58,7 +58,6 @@ const LoginForm: React.FC = () => {
 		} else {
 			setUuid(uuid);
 		}
-		navigate('/')
 	}
 
 	return (
@@ -94,7 +93,7 @@ const LoginForm: React.FC = () => {
 						placeholder='Email Address'
 					/>
 					<div
-						className='password-icon email-icon position--absolute  flex cursor--pointer align-items--center'
+						className='email-icon position--absolute  flex cursor--pointer align-items--center'
 					>
 						<EmailIcon />
 					</div>
@@ -153,8 +152,7 @@ const LoginForm: React.FC = () => {
 				>
 					Continue As Guest
 				</button>
-				<div className='flex align-items--center justify-content--center mt--10'>
-
+				<div className='flex align-items--center justify-content--center mt--10 pt--10'>
 					{signUp ? 'Already a user ?' : 'Need an account ?'}
 					<div
 						onClick={() => setSignUp(!signUp)}
