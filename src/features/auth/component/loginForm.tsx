@@ -1,28 +1,30 @@
 import React, { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import * as Yup from 'yup';
 import { Formik, FormikValues, Field, ErrorMessage, Form } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 
+import * as actionTypes from 'store/actionTypes';
 import AuthService from 'shared/services/auth.service';
 import HttpService from 'shared/services/http.service';
 import { API_CONFIG } from 'shared/constants/api';
 import { createAction } from 'shared/util/utility';
 import {
-    EmailIcon,
     HidePasswordIcon,
     ShowPasswordIcon,
 } from 'shared/components/icons/icons';
 import { PASSWORD_REGEX } from 'shared/constants';
-import * as actionTypes from 'store/actionTypes';
+import { notify } from 'shared/components/notification/notification';
 
 const LoginForm: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [signUp, setSignUp] = useState(false);
     const [uuid, setUuid] = useState('');
+    const [userId, setUserId] = useState('');
+    const [totalAmount, setTotalAmount] = useState(0);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -37,18 +39,21 @@ const LoginForm: React.FC = () => {
             setLoading(true);
             HttpService.post(API_CONFIG.path.login, params)
                 .then((res) => {
-                    setLoading(false);
-                    res.data && AuthService.setAuthData(res.data.token);
+                    const { data, userId, totalAmount } = res;
+                    console.log('.then ~ res:', res);
+                    data && AuthService.setAuthData(data);
                     dispatch(createAction(actionTypes.AUTH_SUCCESS));
-                    dispatch(
-                        createAction(actionTypes.UPDATE_USER_DATA, res.data)
-                    );
+                    dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
+                    setUserId(userId);
+                    setTotalAmount(totalAmount);
+                    setLoading(false);
                     navigate('/dashboard');
+                    notify('User successfully logged in.', 'success');
                 })
                 .catch((err: Error) => {
                     setLoading(false);
                     dispatch(createAction(actionTypes.AUTH_FAILED));
-                    console.log('Error', err);
+                    console.error('Error', err);
                 });
         },
         [dispatch]

@@ -1,19 +1,18 @@
 export interface IAuthState {
-	isLogin: boolean;
-	userData: IUserData;
+    isLogin: boolean;
+    userData: IUserData;
 }
 
 export interface ILoginResponse {
-	data: IUserData;
-	token: string;
+    data: IUserData;
+    token: string;
 }
 
 export interface IUserData {
-	id: string;
-	email: string;
-	role: string;
-	status: string;
-	avatar: string | null;
-	name: string;
-	token: string;
+    accessToken: string;
+    expiresIn: number;
+    refreshTokenIn: number;
+    refreshToken: string;
+    tokenType: string;
+    scope: string;
 }

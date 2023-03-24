@@ -7,15 +7,18 @@ import Login from 'features/auth/container/login';
 import ForgotPassword from 'features/auth/component/forgotPassword';
 import ResetPassword from 'features/auth/component/resetPassword';
 import Dashboard from 'features/dashboard/container/dashboardContainer';
-import AuthService from 'shared/services/auth.service';
 
 const App: React.FC = () => {
-    const isLogin: boolean = AuthService.isLogin();
+    const isLogin = useSelector((state: IState) => state.auth.isLogin);
 
     if (isLogin) {
         return (
             <Routes>
                 <Route path='/dashboard' element={<Dashboard />} />
+                <Route
+                    path='*'
+                    element={<Navigate replace to='/dashboard' />}
+                />
             </Routes>
         );
     } else {

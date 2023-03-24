@@ -1,4 +1,3 @@
-import { count } from 'console';
 import { useState } from 'react';
 import Lottie from 'react-lottie';
 import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
@@ -25,7 +24,6 @@ const Dashboard = () => {
 
     //    if (random >= 1 && random <= 6) {
     //        setDiceAnimation('rolling 4s');
-
     //        setTimeout(() => {
     //            setDiceVal(random);
     //        }, 4550);
@@ -35,6 +33,11 @@ const Dashboard = () => {
     //        handleDiceClick();
     //    }
     //};
+
+    const decreaseValue = (betCount: number) => {
+        betCount - 10;
+        setBetCount(betCount);
+    };
 
     const getPlayData = () => {
         console.log('in');
@@ -109,14 +112,14 @@ const Dashboard = () => {
                         />
                     </div>
 
-                    <div className='curve-wrapper flex align-items--center justify-content--center position--relative overflow--hidden'>
-                        <button className='curve-btn border-radius--30 '>
+                    <div className='curve-wrapper flex align-items--center justify-content--center  position--relative overflow--hidden'>
+                        <button className='curve-btn border-radius--30'>
                             2500
                         </button>
                     </div>
                     <div className='flex '>
-                        <button className='setting-btn mr--20 border-radius--half mt--10 mr--10'>
-                            <i className=' setting-icon fa fa-gear text--white border-radius--30 '></i>
+                        <button className='setting-btn mr--20 border-radius--half mt--15 '>
+                            <i className=' setting-icon fa fa-gear text--white'></i>
                         </button>
                     </div>
                 </div>
@@ -167,7 +170,7 @@ const Dashboard = () => {
                         <div className='flex justify-content--end'>
                             <button
                                 className='minus flex justify-content--center align-items--center mr--10'
-                                onClick={() => setBetCount(betCount - 10)}>
+                                onClick={() => decreaseValue(10)}>
                                 -
                             </button>
                             <p className='bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold'>

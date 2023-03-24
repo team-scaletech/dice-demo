@@ -10,7 +10,6 @@ interface IMiscellaneousRequestParams {
 	contentType?: string;
 	isPublic?: boolean;
 	cancelToken?: CancelToken;
-	isAccessTokenRequire?:boolean
 }
 
 /**
@@ -52,7 +51,6 @@ interface IAxiosParams extends IMiscellaneousRequestParams {
 	method: string;
 	url: string;
 	data?: any;
-	isAccessTokenRequire ?:boolean
 }
 
 /**
@@ -60,7 +58,7 @@ interface IAxiosParams extends IMiscellaneousRequestParams {
  * @param object containing method, url, data, access token, content-type, isLogin
  */
 const commonAxios = (config: IAxiosParams): Promise<any> => {
-	const { method, url, data, contentType = 'application/json', isPublic = false ,isAccessTokenRequire = true } = config;
+	const { method, url, data, contentType = 'application/json', isPublic = false } = config;
 	const headers: any = {
 		'Content-Type': contentType
 		
@@ -73,13 +71,7 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
 		// 	headers['x-access-token'] = `${token}`;
 		// }
 	}
-	const token = "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI5OWYwNGZjZS0zY2Y4LTQwOWQtYjMzMC1iOGZhMDlmMjEyNTkifQ.eyJleHAiOjE2Nzk2NDQ2OTEsImlhdCI6MTY3OTY0Mjg5MSwianRpIjoiNmYyN2U2NTAtMDY4Yy00NDc2LThjZTgtMGM4Mjc1NDhhZTZkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9ieXRybyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvYnl0cm8iLCJzdWIiOiJhMGJmMWY1My02MDVlLTRiZTgtODJlMC0xZWQwOTY2NWRkMzAiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoibG9naW4tYXBwIiwic2Vzc2lvbl9zdGF0ZSI6ImEzYzIwNDJmLTZiMTMtNGRhOC04ZDViLWYwNjMwODNiMzQyOSIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6ImEzYzIwNDJmLTZiMTMtNGRhOC04ZDViLWYwNjMwODNiMzQyOSJ9.AYRwZCJauLPWcknRSp81kKFp0-qxkFATQvpttwLKMnQ"
-
-	if (token) {
-		headers['Authorization'] = `Bearer ${token}`;
-	} else {
-		headers['x-request-language'] = localStorage.getItem('lang') || 'en';
-	}
+	
 	
 	let body: any = null;
 	if (contentType === 'application/json') {
