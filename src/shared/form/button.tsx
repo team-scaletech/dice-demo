@@ -4,7 +4,6 @@ import React, {
     PropsWithChildren,
 } from 'react';
 import classnames from 'classnames';
-import loading from 'assets/images/loding.gif';
 
 interface IButtonProps extends PropsWithChildren {
     btnType?: 'default' | 'primary' | 'warning' | 'danger' | 'info';

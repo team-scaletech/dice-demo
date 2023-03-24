@@ -1,20 +1,25 @@
-import { count } from 'console';
-import { useState } from 'react';
-import Lottie from 'react-lottie';
-import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
-import '../style/dashboard.scss';
+import { useState } from "react";
+import Lottie from "react-lottie";
+import * as yellowDiceAnimation from "assets/lotties/whiteDiceAnimation.json";
+
+import "../style/dashboard.scss";
 
 const Dashboard = () => {
-    const [diceAnimation, setDiceAnimation] = useState('');
-    const [transFormStyle, setTransFormStyle] = useState('');
+    const [diceAnimation, setDiceAnimation] = useState("");
+    const [transFormStyle, setTransFormStyle] = useState("");
     const [diceVal, setDiceVal] = useState(0);
     const [isPlay, setIsPlay] = useState(false);
     const [guessVal, setGuessVal] = useState(0);
-    const [betCount, setBetCount] = useState(200);
+    const [betCount, setBetCount] = useState(10);
     const defaultOptions = {
         loop: true,
         autoplay: true,
         animationData: yellowDiceAnimation,
+    };
+
+    const decreaseValue = (betCount: number) => {
+        betCount - 10;
+        setBetCount(betCount);
     };
 
     const handleDiceClick = () => {
@@ -22,7 +27,7 @@ const Dashboard = () => {
         const random = Math.floor(Math.random() * 7);
 
         if (random >= 1 && random <= 6) {
-            setDiceAnimation('rolling 4s');
+            setDiceAnimation("rolling 4s");
 
             setTimeout(() => {
                 setDiceVal(random);
@@ -35,46 +40,46 @@ const Dashboard = () => {
     };
 
     const rollDice = (random: number) => {
-        let transFormStyle = '';
+        let transFormStyle = "";
         setTimeout(() => {
             switch (random) {
                 case 1:
-                    transFormStyle = 'rotateX(0deg) rotateY(0deg)';
+                    transFormStyle = "rotateX(0deg) rotateY(0deg)";
                     break;
                 case 6:
-                    transFormStyle = 'rotateX(180deg) rotateY(0deg)';
+                    transFormStyle = "rotateX(180deg) rotateY(0deg)";
                     break;
 
                 case 2:
-                    transFormStyle = 'rotateX(-90deg) rotateY(0deg)';
+                    transFormStyle = "rotateX(-90deg) rotateY(0deg)";
                     break;
 
                 case 5:
-                    transFormStyle = 'rotateX(90deg) rotateY(0deg)';
+                    transFormStyle = "rotateX(90deg) rotateY(0deg)";
                     break;
 
                 case 3:
-                    transFormStyle = 'rotateX(0deg) rotateY(90deg)';
+                    transFormStyle = "rotateX(0deg) rotateY(90deg)";
                     break;
 
                 case 4:
-                    transFormStyle = 'rotateX(0deg) rotateY(-90deg)';
+                    transFormStyle = "rotateX(0deg) rotateY(-90deg)";
                     break;
 
                 default:
                     break;
             }
-            setDiceAnimation('none');
+            setDiceAnimation("none");
             setIsPlay(false);
             setTransFormStyle(transFormStyle);
         }, 4050);
     };
 
     return (
-        <div className='main-container flex'>
-            <div className='dashboard-wrapper width--full'>
-                <div className=' header-wrapper flex justify-content--between align-items--center'>
-                    <div className='mt--30'>
+        <div className="main-container flex">
+            <div className="dashboard-wrapper width--full">
+                <div className=" header-wrapper flex justify-content--between align-items--center">
+                    <div className="mt--30">
                         <Lottie
                             options={defaultOptions}
                             height={100}
@@ -82,21 +87,21 @@ const Dashboard = () => {
                         />
                     </div>
 
-                    <div className='curve-wrapper flex align-items--center justify-content--center pt--20 position--relative overflow--hidden'>
-                        <button className='curve-btn'>2500</button>
+                    <div className="curve-wrapper flex align-items--center justify-content--center pt--20 position--relative overflow--hidden">
+                        <button className="curve-btn">2500</button>
                     </div>
-                    <div className='flex '>
-                        <button className='setting-btn mr--20 border-radius--half mt--15 '>
-                            <i className=' setting-icon fa fa-gear text--white'></i>
+                    <div className="flex ">
+                        <button className="setting-btn mr--20 border-radius--half mt--15 ">
+                            <i className=" setting-icon fa fa-gear text--white"></i>
                         </button>
                     </div>
                 </div>
 
-                <div className='dice-main-container width-full flex '>
-                    <div className='dice-container flex align-items--center justify-content--center width--full'>
-                        <div className='dice-wrapper'>
+                <div className="dice-main-container width-full flex ">
+                    <div className="dice-container flex align-items--center justify-content--center width--full">
+                        <div className="dice-wrapper">
                             <div
-                                className='dice'
+                                className="dice"
                                 style={{
                                     transform: transFormStyle,
                                     animation: diceAnimation,
@@ -109,7 +114,7 @@ const Dashboard = () => {
                                 ))}
                             </div>
 
-                            <div className='dice-side-wrapper flex  mt--50 '>
+                            <div className="dice-side-wrapper flex  mt--50 ">
                                 {staticDice.map((data, index: number) => (
                                     <div
                                         className={`dice dice--${index + 1}`}
@@ -117,10 +122,10 @@ const Dashboard = () => {
                                         <div
                                             className={`face face--small-dice face--background ${data} ${
                                                 index + 1 === guessVal &&
-                                                'face--active '
+                                                "face--active "
                                             } ${
                                                 index + 1 === diceVal &&
-                                                'face--win'
+                                                "face--win"
                                             }`}
                                             onClick={() =>
                                                 setGuessVal(index + 1)
@@ -132,21 +137,21 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className='btn-container width--full flex align-items--center '>
-                    <div className='bet-wrapper text--center'>
-                        <p className='btn-title font-size--xxl mb--10'>BET</p>
-                        <div className='flex justify-content--end'>
+                <div className="btn-container width--full flex align-items--center ">
+                    <div className="bet-wrapper text--center">
+                        <p className="btn-title font-size--xxl mb--10">BET</p>
+                        <div className="flex justify-content--end">
                             <button
-                                className='minus flex justify-content--center align-items--center mr--10'
-                                onClick={() => setBetCount(betCount - 100)}>
+                                className="minus flex justify-content--center align-items--center mr--10"
+                                onClick={() => decreaseValue(10)}>
                                 -
                             </button>
-                            <p className='bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold'>
+                            <p className="bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold">
                                 {betCount}
                             </p>
                             <button
-                                className='minus flex justify-content--center align-items--center ml--10'
-                                onClick={() => setBetCount(betCount + 100)}>
+                                className="minus flex justify-content--center align-items--center ml--10"
+                                onClick={() => setBetCount(betCount + 10)}>
                                 +
                             </button>
                         </div>
@@ -154,30 +159,30 @@ const Dashboard = () => {
 
                     <div
                         className={`${
-                            guessVal <= 0 && ' no-pointer-events  '
+                            guessVal <= 0 && " no-pointer-events  "
                         } play-wrapper flex justify-content--center align-items--center `}>
                         <button
-                            className='play-btn'
+                            className="play-btn"
                             disabled={guessVal <= 0}
                             onClick={handleDiceClick}>
                             {!isPlay && (
                                 <i
-                                    className='fa fa-play play flex justify-content--center align-items--center '
-                                    id='play'></i>
+                                    className="fa fa-play play flex justify-content--center align-items--center "
+                                    id="play"></i>
                             )}
                             {isPlay && (
                                 <i
-                                    className='fa fa-square pause flex justify-content--center align-items--center'
-                                    id='pause'></i>
+                                    className="fa fa-square pause flex justify-content--center align-items--center"
+                                    id="pause"></i>
                             )}
                         </button>
                     </div>
-                    <div className='bet-wrapper text--start'>
-                        <p className='win-btn-title font-size--xxl mb--10'>
+                    <div className="bet-wrapper text--start">
+                        <p className="win-btn-title font-size--xxl mb--10">
                             WIN
                         </p>
-                        <div className='flex justify-content--start'>
-                            <p className='bet-amount flex justify-content--center align-items--center font-size--lg font--semi-bold '>
+                        <div className="flex justify-content--start">
+                            <p className="bet-amount flex justify-content--center align-items--center font-size--lg font--semi-bold ">
                                 600.00
                             </p>
                         </div>
@@ -188,7 +193,7 @@ const Dashboard = () => {
     );
 };
 
-const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
-const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
+const dice = ["front", "back", "top", "bottom", "right", "left"];
+const staticDice = ["front", "top", "left", "right", "bottom", "back"];
 
 export default Dashboard;
