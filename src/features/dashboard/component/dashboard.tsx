@@ -1,6 +1,7 @@
+import { count } from 'console';
 import { useState } from 'react';
 import Lottie from 'react-lottie';
-import * as yellowDiceAnimation from '../../../assets/lottiles/yellowDiceAnimation.json';
+import * as yellowDiceAnimation from '../../../assets/lottiles/whiteDiceAnimation.json';
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
@@ -9,7 +10,7 @@ const Dashboard = () => {
     const [diceVal, setDiceVal] = useState(0);
     const [isPlay, setIsPlay] = useState(false);
     const [guessVal, setGuessVal] = useState<number>(0);
-
+    const [betCount, setBetCount] = useState(200);
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -26,6 +27,7 @@ const Dashboard = () => {
             setTimeout(() => {
                 setDiceVal(random);
             }, 4550);
+
             rollDice(random);
         } else {
             handleDiceClick();
@@ -84,8 +86,8 @@ const Dashboard = () => {
                         <button className='curve-btn'>2500</button>
                     </div>
                     <div className='flex '>
-                        <button className='setting-btn mr--20'>
-                            <i className=' setting-icon fa fa-gear'></i>
+                        <button className='setting-btn mr--20 border-radius--half mt--15 '>
+                            <i className=' setting-icon fa fa-gear text--white'></i>
                         </button>
                     </div>
                 </div>
@@ -134,13 +136,17 @@ const Dashboard = () => {
                     <div className='bet-wrapper text--center'>
                         <p className='btn-title font-size--xxl mb--10'>BET</p>
                         <div className='flex justify-content--end'>
-                            <button className='minus flex justify-content--center align-items--center mr--10'>
+                            <button
+                                className='minus flex justify-content--center align-items--center mr--10'
+                                onClick={() => setBetCount(betCount - 100)}>
                                 -
                             </button>
                             <p className='bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold'>
-                                500.00
+                                {betCount}
                             </p>
-                            <button className='minus flex justify-content--center align-items--center ml--10'>
+                            <button
+                                className='minus flex justify-content--center align-items--center ml--10'
+                                onClick={() => setBetCount(betCount + 100)}>
                                 +
                             </button>
                         </div>
