@@ -1,7 +1,7 @@
 import { count } from 'console';
 import { useState } from 'react';
 import Lottie from 'react-lottie';
-import * as yellowDiceAnimation from '../../../assets/lottiles/whiteDiceAnimation.json';
+import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
@@ -9,7 +9,7 @@ const Dashboard = () => {
     const [transFormStyle, setTransFormStyle] = useState('');
     const [diceVal, setDiceVal] = useState(0);
     const [isPlay, setIsPlay] = useState(false);
-    const [guessVal, setGuessVal] = useState<number>(0);
+    const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(200);
     const defaultOptions = {
         loop: true,
@@ -82,7 +82,7 @@ const Dashboard = () => {
                         />
                     </div>
 
-                    <div className='curve-wrapper'>
+                    <div className='curve-wrapper flex align-items--center justify-content--center pt--20 position--relative overflow--hidden'>
                         <button className='curve-btn'>2500</button>
                     </div>
                     <div className='flex '>
