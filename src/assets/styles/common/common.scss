@@ -201,6 +201,7 @@
 .height--full-viewport {
     height: $full-viewport-height;
 }
+
 .height--fit-content {
     height: fit-content !important;
 }
@@ -354,6 +355,7 @@
 .mt--60 {
     @include marginTop(60px);
 }
+
 .mt--65 {
     @include marginTop(65px);
 }
@@ -860,6 +862,10 @@
     line-height: 28px;
 }
 
+.line-height--45 {
+    line-height: 45px;
+}
+
 .line-height--70 {
     line-height: 70px;
 }
@@ -1109,6 +1115,7 @@
 
 .fill--white {
     fill: $white;
+
     &.with-opacity-50 {
         opacity: 0.5;
     }
@@ -1156,9 +1163,11 @@
 
 .text--white {
     color: $white;
+
     &.with-opacity-50 {
         opacity: 0.5;
     }
+
     &.with-opacity-70 {
         opacity: 0.7;
     }
@@ -1194,6 +1203,7 @@
 
 .bg--white {
     background-color: $white;
+
     &.with-opacity-10 {
         opacity: 0.1;
     }
@@ -1305,6 +1315,7 @@
     width: 52px;
     height: 52px;
     border-radius: $border-radius-circle;
+
     svg {
         width: 20px;
         height: 20px;

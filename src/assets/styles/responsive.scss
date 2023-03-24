@@ -1,80 +1,71 @@
-@media screen and (max-width: 1600px) {
+@media screen and (max-height: 1430px) {
+	.login-wrapper {
+		padding: 30px;
+	}
 }
 
-@media screen and (max-width: 1440px) {
-	// Login Page
-	.login {
-		.logo-wrapper {
-			margin-bottom: 40px;
+@media screen and (max-width: 600px) {
+	.login-wrapper {
+		max-width: 300px;
+		padding: 20px;
 
-			.logo_nextedgelogo {
-				max-width: 250px;
-			}
-
-			.logo_reelanalyticslogo {
-				max-width: 100px;
-			}
+		.auth-title {
+			font-size: 53px;
 		}
 
-		.form {
+		.auth_form {
 			.form-item {
+				margin-bottom: 30px;
+
 				.input-field {
-					min-height: 60px;
+					min-height: 47px;
+					font-size: 16px;
 				}
 
 				.password-icon {
-					top: 16px;
+					svg {
+						width: 25px;
+						height: 25px;
+					}
+				}
+
+				.email-icon {
+					top: 14px;
+
+					svg {
+						width: 18px;
+						height: 18px;
+					}
 				}
 			}
+		}
 
-			.checkbox {
-				margin-bottom: 40px;
-			}
-
-			.login-btn {
-				min-height: 60px;
-			}
+		.login-btn {
+			min-height: 47px;
+			font-size: 18px;
+			margin-top: 20px;
 		}
 	}
 }
 
-@media screen and (max-width: 1280px) {
-}
+@media screen and (max-width: 375px) {
+	.login-wrapper {
+		max-width: 270px;
 
-@media screen and (max-width: 1280px) and (min-width: 1024px) {
-}
+		.auth-title {
+			font-size: 45px;
+		}
 
-@media screen and (max-width: 1024px) {
-	// Login Page
-	.login {
-		.logo-wrapper {
-			margin-bottom: 30px;
-
-			.logo_nextedgelogo {
-				max-width: 200px;
-			}
-			.logo_reelanalyticslogo {
-				max-width: 80px;
+		.dice-animation {
+			div {
+				width: 100px;
+				height: 80px;
 			}
 		}
 
-		.form {
+		.auth_form {
 			.form-item {
-				.input-field {
-					min-height: 50px;
-				}
-
-				.password-icon {
-					top: 11px;
-				}
-			}
-
-			.checkbox {
-				margin-bottom: 35px;
-			}
-
-			.login-btn {
-				min-height: 50px;
+				margin-bottom: 25px;
 			}
 		}
 	}
