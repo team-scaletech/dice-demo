@@ -12,10 +12,11 @@ const App: React.FC = () => {
 	const isLogin: boolean = useSelector((state: IState) => state.auth.isLogin);
 
 	if (isLogin) {
-		return <Routes>
-			<Route path='/' element={<Dashboard />} />
-			<Route path='*' element={<Navigate replace to='/' />} />
-		</Routes>;
+		return (
+			<Routes>
+				<Route path='/' element={<Dashboard />} />
+			</Routes>
+		)
 	} else {
 		return (
 			<Routes>

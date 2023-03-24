@@ -26,8 +26,8 @@ const LoginForm: React.FC = () => {
 	const onSubmit = useCallback(
 		(values: FormikValues) => {
 			const params = {
-				email: values.email,
-				password: values.password
+				username: 'hetvi',
+				password: '1234'
 			};
 
 			setLoading(true);
@@ -64,13 +64,13 @@ const LoginForm: React.FC = () => {
 		<Formik
 			initialValues={initialValues}
 			onSubmit={onSubmit}
-			validationSchema={loginFormValidationSchema}
+			// validationSchema={loginFormValidationSchema}
 			validateOnChange
 			validateOnBlur
 			validateOnMount
 		>
 			<Form>
-				{signUp && <div className='form-item mb--25 position--relative'>
+				{/* {signUp && <div className='form-item mb--25 position--relative'>
 					<Field
 						name='username'
 						type='text'
@@ -83,33 +83,32 @@ const LoginForm: React.FC = () => {
 						component='p'
 						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
 					/>
-				</div>}
+				</div>} */}
 				<div className='form-item mb--25 position--relative'>
 					<Field
-						name='email'
-						type='email'
+						readOnly
+						name='username'
+						type='username'
 						className='input-field'
 						autoComplete='off'
-						placeholder='Email Address'
+						placeholder='Enter Your Name'
+						value='hetvi'
 					/>
-					<div
-						className='email-icon position--absolute  flex cursor--pointer align-items--center'
-					>
-						<EmailIcon />
-					</div>
 					<ErrorMessage
-						name='email'
+						name='username'
 						component='p'
 						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
 					/>
 				</div>
 				<div className='form-item mb--45 position--relative'>
 					<Field
+						readOnly
 						name='password'
 						type={showPassword ? 'text' : 'password'}
 						className='input-field'
 						autoComplete='off'
 						placeholder='Password'
+						value='1234'
 					/>
 					<div
 						className='password-icon position--absolute  flex cursor--pointer align-items--center'
@@ -134,7 +133,7 @@ const LoginForm: React.FC = () => {
 				>
 					{signUp ? 'Sign Up' : 'Login'}
 				</button>
-				<div className='flex align-items--center justify-content--end mt--10'>
+				{/* <div className='flex align-items--center justify-content--end mt--10'>
 					<Link
 						to={{
 							pathname: '/forgot-password'
@@ -143,8 +142,8 @@ const LoginForm: React.FC = () => {
 					>
 						{!signUp && 'Forgot Password?'}
 					</Link>
-				</div>
-				<button
+				</div> */}
+				{/* <button
 					disabled={loading}
 					className='login-btn guest-btn mt--30'
 					type='button'
@@ -159,7 +158,7 @@ const LoginForm: React.FC = () => {
 						className='cursor--pointer forgot-password no--bg pl--5 font-size--default text-decoration--underline text--white'>
 						{signUp ? 'LOGIN' : 'SIGN UP'}
 					</div>
-				</div>
+				</div> */}
 			</Form>
 		</Formik >
 	);
@@ -171,7 +170,8 @@ const initialValues = {
 };
 
 const loginFormValidationSchema = Yup.object().shape({
-	email: Yup.string().email('Please Enter Valid Email').required('Please Enter Email').strict(true),
+	// email: Yup.string().email('Please Enter Valid Email').required('Please Enter Email').strict(true),
+	username: Yup.string().required('UserName is Required').strict(true),
 	password: Yup.string()
 		.required('Please Enter Password')
 		.matches(PASSWORD_REGEX, 'Must Contain 8 Characters, One Number and One Special Case Character ')
