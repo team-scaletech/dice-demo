@@ -51,6 +51,7 @@ interface IAxiosParams extends IMiscellaneousRequestParams {
 	method: string;
 	url: string;
 	data?: any;
+	isAccessTokenRequire?:boolean
 }
 
 /**
@@ -58,7 +59,7 @@ interface IAxiosParams extends IMiscellaneousRequestParams {
  * @param object containing method, url, data, access token, content-type, isLogin
  */
 const commonAxios = (config: IAxiosParams): Promise<any> => {
-	const { method, url, data, contentType = 'application/json', isPublic = false } = config;
+	const { method, url, data, contentType = 'application/json', isPublic = false ,isAccessTokenRequire=true } = config;
 	const headers: any = {
 		'Content-Type': contentType
 		
@@ -71,7 +72,15 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
 		// 	headers['x-access-token'] = `${token}`;
 		// }
 	}
-	
+	const token = isAccessTokenRequire && AuthService.getAccessToken();
+
+	console.log('token', isAccessTokenRequire)
+	if (token) {
+		headers['Authorization'] = `Bearer ${token}`;
+	} else {
+		headers['x-request-language'] = localStorage.getItem('lang') || 'en';
+		console.log('else')
+	}
 	
 	let body: any = null;
 	if (contentType === 'application/json') {

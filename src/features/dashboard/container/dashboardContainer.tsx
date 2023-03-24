@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import Lottie from 'react-lottie';
+
+import * as actionTypes from 'store/actionTypes';
+
 import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
-import '../style/dashboard.scss';
+
 import HttpService from 'shared/services/http.service';
 import { API_CONFIG } from 'shared/constants/api';
+import { createAction } from 'shared/util/utility';
+import AuthService from 'shared/services/auth.service';
+import '../style/dashboard.scss';
 
 const Dashboard = () => {
     const [diceAnimation, setDiceAnimation] = useState('');
@@ -54,7 +60,8 @@ const Dashboard = () => {
                 console.log(res, 'res');
             })
             .catch((err: Error) => {
-                console.log(err);
+                console.log(err, 'err');
+                //handleLogin();
             });
 
         /*		setTimeout(() => {
@@ -62,6 +69,26 @@ const Dashboard = () => {
 		}, 4550);
 
 		rollDice(random);*/
+    };
+
+    const handleLogin = () => {
+        const params = {
+            username: '',
+            password: '',
+        };
+        HttpService.post(API_CONFIG.path.login, params)
+            .then((res) => {
+                const { data } = res;
+                console.log('.then ~ res:', res);
+                //getPlayData();
+                data && AuthService.setAuthData(data);
+                dispatch(createAction(actionTypes.AUTH_SUCCESS));
+                dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
+            })
+            .catch((err: Error) => {
+                dispatch(createAction(actionTypes.AUTH_FAILED));
+                console.error('Error', err);
+            });
     };
 
     const rollDice = (random: number) => {
@@ -144,7 +171,9 @@ const Dashboard = () => {
                             <div className='dice-side-wrapper flex  mt--50 '>
                                 {staticDice.map((data, index: number) => (
                                     <div
-                                        className={`dice dice--${index + 1}`}
+                                        className={`dice dice--width dice--${
+                                            index + 1
+                                        }`}
                                         key={index}>
                                         <div
                                             className={`face face--small-dice face--background ${data} ${
@@ -224,3 +253,6 @@ const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
 const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
 
 export default Dashboard;
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.');
+}
