@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Lottie from 'react-lottie';
 import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
 import '../style/dashboard.scss';
+import HttpService from 'shared/services/http.service';
+import { API_CONFIG } from 'shared/constants/api';
 
 const Dashboard = () => {
     const [diceAnimation, setDiceAnimation] = useState('');
@@ -10,28 +12,53 @@ const Dashboard = () => {
     const [diceVal, setDiceVal] = useState(0);
     const [isPlay, setIsPlay] = useState(false);
     const [guessVal, setGuessVal] = useState(0);
-    const [betCount, setBetCount] = useState(200);
+    const [betCount, setBetCount] = useState(10);
     const defaultOptions = {
         loop: true,
         autoplay: true,
         animationData: yellowDiceAnimation,
     };
 
-    const handleDiceClick = () => {
-        setIsPlay(true);
-        const random = Math.floor(Math.random() * 7);
+    //const handleDiceClick = () => {
+    //    setIsPlay(true);
+    //    const random = Math.floor(Math.random() * 7);
 
-        if (random >= 1 && random <= 6) {
-            setDiceAnimation('rolling 4s');
+    //    if (random >= 1 && random <= 6) {
+    //        setDiceAnimation('rolling 4s');
 
-            setTimeout(() => {
-                setDiceVal(random);
-            }, 4550);
+    //        setTimeout(() => {
+    //            setDiceVal(random);
+    //        }, 4550);
 
-            rollDice(random);
-        } else {
-            handleDiceClick();
-        }
+    //        rollDice(random);
+    //    } else {
+    //        handleDiceClick();
+    //    }
+    //};
+
+    const getPlayData = () => {
+        console.log('in');
+        setDiceAnimation('rolling 4s');
+
+        const params = {
+            userId: '0ec769a6-d851-448d-9787-c6add13a61cc',
+            predictedNumber: guessVal,
+            battedAmount: betCount,
+        };
+
+        HttpService.post(API_CONFIG.path.play, params)
+            .then((res) => {
+                console.log(res, 'res');
+            })
+            .catch((err: Error) => {
+                console.log(err);
+            });
+
+        /*		setTimeout(() => {
+			setDiceVal(random);
+		}, 4550);
+
+		rollDice(random);*/
     };
 
     const rollDice = (random: number) => {
@@ -73,21 +100,23 @@ const Dashboard = () => {
     return (
         <div className='main-container flex'>
             <div className='dashboard-wrapper width--full'>
-                <div className=' header-wrapper flex justify-content--between align-items--center'>
-                    <div className='mt--30'>
+                <div className='header-wrapper flex justify-content--between '>
+                    <div className='animation-wrapper'>
                         <Lottie
                             options={defaultOptions}
-                            height={100}
-                            width={100}
+                            height={50}
+                            width={50}
                         />
                     </div>
 
-                    <div className='curve-wrapper flex align-items--center justify-content--center pt--20 position--relative overflow--hidden'>
-                        <button className='curve-btn'>2500</button>
+                    <div className='curve-wrapper flex align-items--center justify-content--center position--relative overflow--hidden'>
+                        <button className='curve-btn border-radius--30 '>
+                            2500
+                        </button>
                     </div>
                     <div className='flex '>
-                        <button className='setting-btn mr--20 border-radius--half mt--15 '>
-                            <i className=' setting-icon fa fa-gear text--white'></i>
+                        <button className='setting-btn mr--20 border-radius--half mt--10 mr--10'>
+                            <i className=' setting-icon fa fa-gear text--white border-radius--30 '></i>
                         </button>
                     </div>
                 </div>
@@ -138,7 +167,7 @@ const Dashboard = () => {
                         <div className='flex justify-content--end'>
                             <button
                                 className='minus flex justify-content--center align-items--center mr--10'
-                                onClick={() => setBetCount(betCount - 100)}>
+                                onClick={() => setBetCount(betCount - 10)}>
                                 -
                             </button>
                             <p className='bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold'>
@@ -146,7 +175,7 @@ const Dashboard = () => {
                             </p>
                             <button
                                 className='minus flex justify-content--center align-items--center ml--10'
-                                onClick={() => setBetCount(betCount + 100)}>
+                                onClick={() => setBetCount(betCount + 10)}>
                                 +
                             </button>
                         </div>
@@ -159,7 +188,7 @@ const Dashboard = () => {
                         <button
                             className='play-btn'
                             disabled={guessVal <= 0}
-                            onClick={handleDiceClick}>
+                            onClick={getPlayData}>
                             {!isPlay && (
                                 <i
                                     className='fa fa-play play flex justify-content--center align-items--center '

@@ -7,11 +7,12 @@ import Login from 'features/auth/container/login';
 import ForgotPassword from 'features/auth/component/forgotPassword';
 import ResetPassword from 'features/auth/component/resetPassword';
 import Dashboard from 'features/dashboard/container/dashboardContainer';
+import AuthService from 'shared/services/auth.service';
 
 const App: React.FC = () => {
-    const isLogin: boolean = useSelector((state: IState) => state.auth.isLogin);
+    const isLogin: boolean = AuthService.isLogin();
 
-    if (!isLogin) {
+    if (isLogin) {
         return (
             <Routes>
                 <Route path='/dashboard' element={<Dashboard />} />
