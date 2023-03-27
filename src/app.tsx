@@ -9,7 +9,7 @@ import ResetPassword from "features/auth/component/resetPassword";
 import Dashboard from "features/dashboard/container/dashboardContainer";
 
 const App: React.FC = () => {
-    const isLogin: boolean = useSelector((state: IState) => state.auth.isLogin);
+    const isLogin = useSelector((state: IState) => state.auth.isLogin);
 
     if (isLogin) {
         return (

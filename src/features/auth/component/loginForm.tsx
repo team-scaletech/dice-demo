@@ -1,22 +1,21 @@
 import React, { useCallback, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import * as Yup from "yup";
 import { Formik, FormikValues, Field, ErrorMessage, Form } from "formik";
 import { v4 as uuidv4 } from "uuid";
 
+import * as actionTypes from "store/actionTypes";
 import AuthService from "shared/services/auth.service";
 import HttpService from "shared/services/http.service";
 import { API_CONFIG } from "shared/constants/api";
 import { createAction } from "shared/util/utility";
 import {
-    EmailIcon,
     HidePasswordIcon,
     ShowPasswordIcon,
 } from "shared/components/icons/icons";
 import { PASSWORD_REGEX } from "shared/constants";
-import * as actionTypes from "store/actionTypes";
 import { notify } from "shared/components/notification/notification";
 
 const LoginForm: React.FC = () => {
@@ -33,22 +32,20 @@ const LoginForm: React.FC = () => {
     const onSubmit = useCallback(
         (values: FormikValues) => {
             const params = {
-                username: "hetvi",
-                password: "1234",
+                username: values.username,
+                password: values.password,
             };
 
             setLoading(true);
             HttpService.post(API_CONFIG.path.login, params)
                 .then((res) => {
-                    const { data, userId, totalAmount } = res;
-                    data && AuthService.setAuthData(data);
-                    dispatch(createAction(actionTypes.AUTH_SUCCESS));
-                    dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
-                    setUserId(userId);
-                    setTotalAmount(totalAmount);
                     setLoading(false);
-                    navigate("/dashboard");
-                    notify("User successfully logged in.", "success");
+                    res.data && AuthService.setAuthData(res.data.token);
+                    dispatch(createAction(actionTypes.AUTH_SUCCESS));
+                    dispatch(
+                        createAction(actionTypes.UPDATE_USER_DATA, res.data)
+                    );
+                    navigate("/");
                 })
                 .catch((err: Error) => {
                     setLoading(false);
@@ -90,34 +87,30 @@ const LoginForm: React.FC = () => {
 					<ErrorMessage
 						name='username'
 						component='p'
-						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
+						className='text--red-400 font-size--ms pl--10 error-message mt--5'
 					/>
 				</div>} */}
                 <div className="form-item mb--25 position--relative">
                     <Field
-                        readOnly
                         name="username"
                         type="username"
                         className="input-field"
                         autoComplete="off"
                         placeholder="Enter Your Name"
-                        value="hetvi"
                     />
                     <ErrorMessage
                         name="username"
                         component="p"
-                        className="text--red-400 font-size--xxs pl--10 error-message mt--5"
+                        className="text--red-400 font-size--sm pl--10 error-message mt--5"
                     />
                 </div>
                 <div className="form-item mb--45 position--relative">
                     <Field
-                        readOnly
                         name="password"
                         type={showPassword ? "text" : "password"}
                         className="input-field"
                         autoComplete="off"
                         placeholder="Password"
-                        value="1234"
                     />
                     <div
                         className="password-icon position--absolute  flex cursor--pointer align-items--center"
@@ -131,7 +124,7 @@ const LoginForm: React.FC = () => {
                     <ErrorMessage
                         name="password"
                         component="p"
-                        className="text--red-400 font-size--xxs pl--10 error-message mt--5"
+                        className="text--red-400 font-size--ms pl--10 error-message mt--5"
                     />
                 </div>
                 <button disabled={loading} className="login-btn" type="submit">

@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 import { API_BASE_URL } from 'shared/constants';
 import { getUrl } from 'shared/constants/api';
 import { IResponseObject } from 'shared/interface';
+import AuthService from './auth.service';
 
 const axiosInstance = axios.create();
 
@@ -60,6 +61,7 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
 	const { method, url, data, contentType = 'application/json', isPublic = false } = config;
 	const headers: any = {
 		'Content-Type': contentType
+		
 	};
 
 	// if end point is public than no need to provide access token
@@ -69,7 +71,8 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
 		// 	headers['x-access-token'] = `${token}`;
 		// }
 	}
-
+	
+	
 	let body: any = null;
 	if (contentType === 'application/json') {
 		body = JSON.stringify(data);
