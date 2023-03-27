@@ -50,7 +50,7 @@ const LoginForm: React.FC = () => {
                 .catch((err: Error) => {
                     setLoading(false);
                     dispatch(createAction(actionTypes.AUTH_FAILED));
-                    console.log("Error", err);
+                    console.error("Error", err);
                 });
         },
         [dispatch]

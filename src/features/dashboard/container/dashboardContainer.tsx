@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Lottie from "react-lottie";
 import * as yellowDiceAnimation from "assets/lotties/whiteDiceAnimation.json";
-import "../style/dashboard.scss";
 import HttpService from "shared/services/http.service";
 import { API_CONFIG } from "shared/constants/api";
+
+import "../style/dashboard.scss";
 
 const Dashboard = () => {
     const [diceAnimation, setDiceAnimation] = useState("");
@@ -32,11 +33,6 @@ const Dashboard = () => {
         } else {
             handleDiceClick();
         }
-    };
-
-    const decreaseValue = (betCount: number) => {
-        betCount - 10;
-        setBetCount(betCount);
     };
 
     // const getPlayData = () => {
@@ -141,7 +137,7 @@ const Dashboard = () => {
                             </div>
 
                             <div className="dice-side-wrapper flex  mt--50">
-                                {staticDice.map((data, index: number) => (
+                                {staticDice.map((data, index) => (
                                     <div
                                         className={`dice cursor--pointer dice--${
                                             index + 1
@@ -171,7 +167,11 @@ const Dashboard = () => {
                         <div className="flex justify-content--end">
                             <button
                                 className="minus custom-btn flex justify-content--center align-items--center mr--10"
-                                onClick={() => decreaseValue(10)}>
+                                onClick={() =>
+                                    setBetCount(
+                                        betCount > 10 ? betCount - 10 : betCount
+                                    )
+                                }>
                                 -
                             </button>
                             <p className="bet-amount custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold">
