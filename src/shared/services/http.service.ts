@@ -123,7 +123,6 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
         headers['Authorization'] = `Bearer ${token}`;
     } else {
         headers['x-request-language'] = localStorage.getItem('lang') || 'en';
-        console.log('else');
     }
 
     let body: any = null;

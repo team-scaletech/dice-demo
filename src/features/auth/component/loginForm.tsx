@@ -38,14 +38,8 @@ const LoginForm: React.FC = () => {
                 password: values.password,
             };
 
+            AuthService.setUserData(values);
             //const userName = localStorage.setItem('username', values.username);
-            //console.log('val', val);
-            //const cipherText = CryptoJS.AES.encrypt(
-            //    JSON.stringify(values.username),
-            //    KEY
-            //);
-            //console.log('cipherText', cipherText);
-            //localStorage.setItem('username', cipherText.toString());
 
             setLoading(true);
             HttpService.post(API_CONFIG.path.login, params)
@@ -57,7 +51,6 @@ const LoginForm: React.FC = () => {
                     setUserId(userId);
                     setTotalAmount(totalAmount);
                     setLoading(false);
-                    //navigate('/dashboard');
                     notify('User successfully logged in.', 'success');
                 })
                 .catch((err: Error) => {

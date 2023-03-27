@@ -4,7 +4,7 @@ export interface IAuthState {
 }
 
 export interface ILoginResponse {
-	accessToken: string;
+    accessToken: string;
     data: IUserData;
     token: string;
 }

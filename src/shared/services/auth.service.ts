@@ -20,12 +20,26 @@ const isLogin = (): boolean => {
 const getAuthData = () => {
     try {
         const data = localStorage.authData;
-        console.log('data', data);
         if (data) {
             const bytes = CryptoJS.AES.decrypt(data.toString(), KEY);
             const decryptedData = JSON.parse(
                 bytes.toString(CryptoJS.enc.Utf8)
             ) as ILoginResponse;
+            return decryptedData;
+        } else {
+            return false;
+        }
+    } catch (e) {
+        return false;
+    }
+};
+
+const getUserData = () => {
+    try {
+        const data = localStorage.userInfo;
+        if (data) {
+            const bytes = CryptoJS.AES.decrypt(data.toString(), KEY);
+            const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
             return decryptedData;
         } else {
             return false;
@@ -50,6 +64,10 @@ const removeAuthData = (): void => {
     localStorage.removeItem('authData');
 };
 
+const removeUserInfo = (): void => {
+    localStorage.removeItem('userInfo');
+};
+
 /**
  * function to get user access token
  */
@@ -60,6 +78,11 @@ const getAccessToken = (): string => {
     } else {
         return '';
     }
+};
+
+const setUserData = (data: any): void => {
+    const userInfo = CryptoJS.AES.encrypt(JSON.stringify(data), KEY);
+    localStorage.setItem('userInfo', userInfo.toString());
 };
 
 /**
@@ -75,6 +98,9 @@ const AuthService = {
     setAuthData: setAuthData,
     getAuthData: getAuthData,
     removeAuthData: removeAuthData,
+    setUserData: setUserData,
+    getUserData: getUserData,
+    removeUserInfo: removeUserInfo,
 };
 
 export default AuthService;

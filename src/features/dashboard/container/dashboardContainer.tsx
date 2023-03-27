@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 
+import { useDispatch } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
 import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
@@ -9,44 +10,29 @@ import HttpService from 'shared/services/http.service';
 import { API_CONFIG } from 'shared/constants/api';
 import { createAction } from 'shared/util/utility';
 import AuthService from 'shared/services/auth.service';
-import '../style/dashboard.scss';
-import { IAction } from 'shared/interface/state';
-import { useDispatch } from 'react-redux';
 import CustomModal from 'shared/modal/modal';
 import { notify } from 'shared/components/notification/notification';
+import '../style/dashboard.scss';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
 
     const [diceAnimation, setDiceAnimation] = useState('');
     const [transFormStyle, setTransFormStyle] = useState('');
-    const [diceVal, setDiceVal] = useState(0);
+    const [diceVal, setDiceVal] = useState();
     const [isPlay, setIsPlay] = useState(false);
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
 
     const [logoutPopup, setLogoutPopup] = useState(false);
+
     const defaultOptions = {
         loop: true,
         autoplay: true,
         animationData: yellowDiceAnimation,
     };
-
-    //const handleDiceClick = () => {
-    //    setIsPlay(true);
-    //    const random = Math.floor(Math.random() * 7);
-
-    //    if (random >= 1 && random <= 6) {
-    //        setDiceAnimation('rolling 4s');
-    //        setTimeout(() => {
-    //            setDiceVal(random);
-    //        }, 4550);
-
-    //        rollDice(random);
-    //    } else {
-    //        handleDiceClick();
-    //    }
-    //};
+    const userData = AuthService.getUserData();
+    const { username, password } = userData;
 
     const decreaseValue = (betCount: number) => {
         betCount - 10;
@@ -54,6 +40,7 @@ const Dashboard = () => {
     };
 
     const getPlayData = () => {
+        setIsPlay(true);
         setDiceAnimation('rolling 4s');
 
         const params = {
@@ -68,36 +55,22 @@ const Dashboard = () => {
                 const { actualNumber } = res.data;
                 setTimeout(() => {
                     setDiceVal(actualNumber);
+                    setIsPlay(false);
                 }, 4550);
+
                 rollDice(actualNumber);
             })
-            .catch((err: Error) => {
-                console.log(err, 'err');
-                handleLogin();
-            });
-    };
+            .catch((err) => {
+                console.error(err, 'err');
+                setTimeout(() => {
+                    setIsPlay(false);
+                    notify(
+                        'User does not have sufficient balance to roll dice.',
+                        'error'
+                    );
+                }, 4550);
 
-    const logOut = () => {
-        dispatch(createAction(actionTypes.AUTH_LOGOUT));
-        AuthService.removeAuthData();
-        notify('Admin successfully logged out.', 'success');
-    };
-
-    const handleLogin = () => {
-        const params = {
-            username: '',
-            password: '',
-        };
-        HttpService.post(API_CONFIG.path.login, params)
-            .then((res) => {
-                const { data } = res;
-                data && AuthService.setAuthData(data);
-                dispatch(createAction(actionTypes.AUTH_SUCCESS));
-                dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
-            })
-            .catch((err: Error) => {
-                dispatch(createAction(actionTypes.AUTH_FAILED));
-                console.error('Error', err);
+                err.code === 401 && handleLogin();
             });
     };
 
@@ -136,6 +109,46 @@ const Dashboard = () => {
             setTransFormStyle(transFormStyle);
         }, 4050);
     };
+
+    const handleLogin = () => {
+        const params = {
+            username: username,
+            password: password,
+        };
+        HttpService.post(API_CONFIG.path.login, params)
+            .then((res) => {
+                const { data } = res;
+                data && AuthService.setAuthData(data);
+                dispatch(createAction(actionTypes.AUTH_SUCCESS));
+                dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
+                getPlayData();
+            })
+            .catch((err: Error) => {
+                dispatch(createAction(actionTypes.AUTH_FAILED));
+                console.error('Error', err);
+            });
+    };
+
+    const logOut = () => {
+        dispatch(createAction(actionTypes.AUTH_LOGOUT));
+        AuthService.removeAuthData();
+        AuthService.removeUserInfo();
+        notify('Admin successfully logged out.', 'success');
+    };
+
+    const handleWallet = () => {
+        HttpService.get(`${API_CONFIG.path.walletInfo}/${username}`)
+            .then((res) => {
+                console.log('res', res);
+            })
+            .catch((err) => {
+                console.error(err, 'err');
+            });
+    };
+
+    useEffect(() => {
+        handleWallet();
+    }, []);
 
     return (
         <div className='main-container flex'>
