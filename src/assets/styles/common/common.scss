@@ -1193,6 +1193,10 @@
     color: $black;
 }
 
+.text--white {
+    color: $white;
+}
+
 .bg--grey {
     @include getShadesColorClasses($grey, 'background-color');
 }
