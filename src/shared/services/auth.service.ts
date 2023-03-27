@@ -1,5 +1,5 @@
-import CryptoJS from "crypto-js";
-import { ILoginResponse } from "features/auth/interface/auth";
+import CryptoJS from 'crypto-js';
+import { ILoginResponse } from 'features/auth/interface/auth';
 
 const KEY: string = process.env.REACT_APP_ENCRYPTION_KEY as string;
 
@@ -20,6 +20,7 @@ const isLogin = (): boolean => {
 const getAuthData = () => {
     try {
         const data = localStorage.authData;
+        console.log('data', data);
         if (data) {
             const bytes = CryptoJS.AES.decrypt(data.toString(), KEY);
             const decryptedData = JSON.parse(
@@ -39,14 +40,14 @@ const getAuthData = () => {
  */
 const setAuthData = (data: ILoginResponse): void => {
     const cipherText = CryptoJS.AES.encrypt(JSON.stringify(data), KEY);
-    localStorage.setItem("authData", cipherText.toString());
+    localStorage.setItem('authData', cipherText.toString());
 };
 
 /**
  * function to remove user authentication data
  */
 const removeAuthData = (): void => {
-    localStorage.removeItem("authData");
+    localStorage.removeItem('authData');
 };
 
 /**
@@ -54,11 +55,10 @@ const removeAuthData = (): void => {
  */
 const getAccessToken = (): string => {
     const data = getAuthData();
-	console.log("getAccessToken ~ data:", data)
     if (data) {
         return data.accessToken;
     } else {
-        return "";
+        return '';
     }
 };
 
@@ -66,7 +66,7 @@ const getAccessToken = (): string => {
  * function to get user language
  */
 export const getUserLanguage = (): string => {
-    return "en";
+    return 'en';
 };
 
 const AuthService = {

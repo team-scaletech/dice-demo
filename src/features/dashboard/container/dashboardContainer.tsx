@@ -10,14 +10,22 @@ import { API_CONFIG } from 'shared/constants/api';
 import { createAction } from 'shared/util/utility';
 import AuthService from 'shared/services/auth.service';
 import '../style/dashboard.scss';
+import { IAction } from 'shared/interface/state';
+import { useDispatch } from 'react-redux';
+import CustomModal from 'shared/modal/modal';
+import { notify } from 'shared/components/notification/notification';
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+
     const [diceAnimation, setDiceAnimation] = useState('');
     const [transFormStyle, setTransFormStyle] = useState('');
     const [diceVal, setDiceVal] = useState(0);
     const [isPlay, setIsPlay] = useState(false);
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
+
+    const [logoutPopup, setLogoutPopup] = useState(false);
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -46,29 +54,33 @@ const Dashboard = () => {
     };
 
     const getPlayData = () => {
-        console.log('in');
         setDiceAnimation('rolling 4s');
 
         const params = {
-            userId: '0ec769a6-d851-448d-9787-c6add13a61cc',
+            userId: '1',
             predictedNumber: guessVal,
             battedAmount: betCount,
         };
 
         HttpService.post(API_CONFIG.path.play, params)
             .then((res) => {
-                console.log(res, 'res');
+                console.log('res', res);
+                const { actualNumber } = res.data;
+                setTimeout(() => {
+                    setDiceVal(actualNumber);
+                }, 4550);
+                rollDice(actualNumber);
             })
             .catch((err: Error) => {
                 console.log(err, 'err');
-                //handleLogin();
+                handleLogin();
             });
+    };
 
-        /*		setTimeout(() => {
-			setDiceVal(random);
-		}, 4550);
-
-		rollDice(random);*/
+    const logOut = () => {
+        dispatch(createAction(actionTypes.AUTH_LOGOUT));
+        AuthService.removeAuthData();
+        notify('Admin successfully logged out.', 'success');
     };
 
     const handleLogin = () => {
@@ -79,8 +91,6 @@ const Dashboard = () => {
         HttpService.post(API_CONFIG.path.login, params)
             .then((res) => {
                 const { data } = res;
-                console.log('.then ~ res:', res);
-                //getPlayData();
                 data && AuthService.setAuthData(data);
                 dispatch(createAction(actionTypes.AUTH_SUCCESS));
                 dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
@@ -145,7 +155,9 @@ const Dashboard = () => {
                         </button>
                     </div>
                     <div className='flex '>
-                        <button className='setting-btn mr--20 border-radius--half mt--15 '>
+                        <button
+                            className='setting-btn mr--20 border-radius--half mt--15 '
+                            onClick={() => setLogoutPopup(true)}>
                             <i className=' setting-icon fa fa-gear text--white'></i>
                         </button>
                     </div>
@@ -245,6 +257,30 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            {logoutPopup && (
+                <CustomModal
+                    show={true}
+                    handleClose={() => setLogoutPopup(false)}
+                    className='logout-modal'>
+                    <div>
+                        <p className='logout-title font-size--xl text--center mb--30 '>
+                            Are you sure you want to logout?
+                        </p>
+                        <div className='button-wrapper flex justify-content--center'>
+                            <button
+                                className=' button ok-btn mr--10'
+                                onClick={logOut}>
+                                yes
+                            </button>
+                            <button
+                                className=' button cancel-btn'
+                                onClick={() => setLogoutPopup(false)}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </CustomModal>
+            )}
         </div>
     );
 };
@@ -253,6 +289,3 @@ const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
 const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
 
 export default Dashboard;
-function dispatch(arg0: any) {
-    throw new Error('Function not implemented.');
-}

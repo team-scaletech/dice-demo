@@ -19,6 +19,8 @@ import { PASSWORD_REGEX } from 'shared/constants';
 import { notify } from 'shared/components/notification/notification';
 
 const LoginForm: React.FC = () => {
+    const KEY: string = process.env.REACT_APP_ENCRYPTION_KEY as string;
+
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [signUp, setSignUp] = useState(false);
@@ -32,22 +34,30 @@ const LoginForm: React.FC = () => {
     const onSubmit = useCallback(
         (values: FormikValues) => {
             const params = {
-                username: 'hetvi',
-                password: '1234',
+                username: values.username,
+                password: values.password,
             };
+
+            //const userName = localStorage.setItem('username', values.username);
+            //console.log('val', val);
+            //const cipherText = CryptoJS.AES.encrypt(
+            //    JSON.stringify(values.username),
+            //    KEY
+            //);
+            //console.log('cipherText', cipherText);
+            //localStorage.setItem('username', cipherText.toString());
 
             setLoading(true);
             HttpService.post(API_CONFIG.path.login, params)
                 .then((res) => {
                     const { data, userId, totalAmount } = res;
-                    console.log('.then ~ res:', res);
                     data && AuthService.setAuthData(data);
                     dispatch(createAction(actionTypes.AUTH_SUCCESS));
                     dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
                     setUserId(userId);
                     setTotalAmount(totalAmount);
                     setLoading(false);
-                    navigate('/dashboard');
+                    //navigate('/dashboard');
                     notify('User successfully logged in.', 'success');
                 })
                 .catch((err: Error) => {
@@ -95,13 +105,11 @@ const LoginForm: React.FC = () => {
 				</div>} */}
                 <div className='form-item mb--25 position--relative'>
                     <Field
-                        readOnly
                         name='username'
                         type='username'
                         className='input-field'
                         autoComplete='off'
                         placeholder='Enter Your Name'
-                        value='hetvi'
                     />
                     <ErrorMessage
                         name='username'
@@ -111,13 +119,11 @@ const LoginForm: React.FC = () => {
                 </div>
                 <div className='form-item mb--45 position--relative'>
                     <Field
-                        readOnly
                         name='password'
                         type={showPassword ? 'text' : 'password'}
                         className='input-field'
                         autoComplete='off'
                         placeholder='Password'
-                        value='1234'
                     />
                     <div
                         className='password-icon position--absolute  flex cursor--pointer align-items--center'
