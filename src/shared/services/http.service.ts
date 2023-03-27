@@ -108,6 +108,7 @@ const commonAxios = (config: IAxiosParams): Promise<any> => {
     } = config;
     const headers: any = {
         'Content-Type': contentType,
+        'ngrok-skip-browser-warning': 1,
     };
 
     // if end point is public than no need to provide access token

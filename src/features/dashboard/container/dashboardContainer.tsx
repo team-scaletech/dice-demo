@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
-
 import { useDispatch } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
@@ -19,12 +18,13 @@ const Dashboard = () => {
 
     const [diceAnimation, setDiceAnimation] = useState('');
     const [transFormStyle, setTransFormStyle] = useState('');
-    const [diceVal, setDiceVal] = useState();
     const [isPlay, setIsPlay] = useState(false);
+    const [logoutPopup, setLogoutPopup] = useState(false);
+    const [diceVal, setDiceVal] = useState();
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
-
-    const [logoutPopup, setLogoutPopup] = useState(false);
+    const [walletAmount, setWalletAmount] = useState(0);
+    const [winAmount, setWinAmount] = useState(0);
 
     const defaultOptions = {
         loop: true,
@@ -51,11 +51,12 @@ const Dashboard = () => {
 
         HttpService.post(API_CONFIG.path.play, params)
             .then((res) => {
-                console.log('res', res);
-                const { actualNumber } = res.data;
+                const { actualNumber, isWinner, battedAmount } = res.data;
                 setTimeout(() => {
                     setDiceVal(actualNumber);
                     setIsPlay(false);
+                    handleWallet();
+                    isWinner && setWinAmount(battedAmount * 5);
                 }, 4550);
 
                 rollDice(actualNumber);
@@ -139,7 +140,7 @@ const Dashboard = () => {
     const handleWallet = () => {
         HttpService.get(`${API_CONFIG.path.walletInfo}/${username}`)
             .then((res) => {
-                console.log('res', res);
+                setWalletAmount(res.data.wallet.walletAmount);
             })
             .catch((err) => {
                 console.error(err, 'err');
@@ -164,7 +165,7 @@ const Dashboard = () => {
 
                     <div className='curve-wrapper flex align-items--center justify-content--center  position--relative overflow--hidden'>
                         <button className='curve-btn border-radius--30'>
-                            2500
+                            {walletAmount}
                         </button>
                     </div>
                     <div className='flex '>
@@ -178,7 +179,7 @@ const Dashboard = () => {
 
                 <div className='dice-main-container width-full flex '>
                     <div className='dice-container flex align-items--center justify-content--center width--full'>
-                        <div className='dice-wrapper'>
+                        <div className='dice-wrapper '>
                             <div
                                 className='dice'
                                 style={{
@@ -196,7 +197,7 @@ const Dashboard = () => {
                             <div className='dice-side-wrapper flex  mt--50 '>
                                 {staticDice.map((data, index: number) => (
                                     <div
-                                        className={`dice dice--width dice--${
+                                        className={`dice dice--width cursor--pointer  dice--${
                                             index + 1
                                         }`}
                                         key={index}>
@@ -264,7 +265,7 @@ const Dashboard = () => {
                         </p>
                         <div className='flex justify-content--start'>
                             <p className='bet-amount flex justify-content--center align-items--center font-size--lg font--semi-bold '>
-                                600.00
+                                {winAmount > 0 ? winAmount : 'Good Luck !'}
                             </p>
                         </div>
                     </div>

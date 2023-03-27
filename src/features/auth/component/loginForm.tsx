@@ -37,10 +37,7 @@ const LoginForm: React.FC = () => {
                 username: values.username,
                 password: values.password,
             };
-
             AuthService.setUserData(values);
-            //const userName = localStorage.setItem('username', values.username);
-
             setLoading(true);
             HttpService.post(API_CONFIG.path.login, params)
                 .then((res) => {
