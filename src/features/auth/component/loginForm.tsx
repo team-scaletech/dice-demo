@@ -90,7 +90,7 @@ const LoginForm: React.FC = () => {
 					<ErrorMessage
 						name='username'
 						component='p'
-						className='text--red-400 font-size--xxs pl--10 error-message mt--5'
+						className='text--red-400 font-size--ms pl--10 error-message mt--5'
 					/>
 				</div>} */}
                 <div className='form-item mb--25 position--relative'>
@@ -104,7 +104,7 @@ const LoginForm: React.FC = () => {
                     <ErrorMessage
                         name='username'
                         component='p'
-                        className='text--red-400 font-size--xxs pl--10 error-message mt--5'
+                        className='text--red-400 font-size--sm pl--10 error-message mt--5'
                     />
                 </div>
                 <div className='form-item mb--45 position--relative'>
@@ -127,7 +127,7 @@ const LoginForm: React.FC = () => {
                     <ErrorMessage
                         name='password'
                         component='p'
-                        className='text--red-400 font-size--xxs pl--10 error-message mt--5'
+                        className='text--red-400 font-size--ms pl--10 error-message mt--5'
                     />
                 </div>
                 <button disabled={loading} className='login-btn' type='submit'>

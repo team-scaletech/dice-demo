@@ -154,8 +154,8 @@ const Dashboard = () => {
     return (
         <div className='main-container flex'>
             <div className='dashboard-wrapper width--full'>
-                <div className='header-wrapper flex justify-content--between '>
-                    <div className='animation-wrapper'>
+                <div className='header-wrapper width--full flex justify-content--between'>
+                    <div className='animation-wrapper custom-btn border-radius--half overflow--hidden ml--10 mt--10'>
                         <Lottie
                             options={defaultOptions}
                             height={50}
@@ -163,32 +163,32 @@ const Dashboard = () => {
                         />
                     </div>
 
-                    <div className='curve-wrapper flex align-items--center justify-content--center  position--relative overflow--hidden'>
-                        <button className='curve-btn border-radius--30'>
+                    <div className='curve-wrapper custom-btn flex align-items--center justify-content--center  position--relative overflow--hidden'>
+                        <button className='curve-btn text--white border-radius--30 font-size--lg'>
                             {walletAmount}
                         </button>
                     </div>
-                    <div className='flex '>
+                    <div className='flex'>
                         <button
-                            className='setting-btn mr--20 border-radius--half mt--15 '
+                            className='custom-btn setting-btn mr--20 border-radius--half mt--15'
                             onClick={() => setLogoutPopup(true)}>
-                            <i className=' setting-icon fa fa-gear text--white'></i>
+                            <i className='font-size--30 fa fa-gear text--white' />
                         </button>
                     </div>
                 </div>
 
-                <div className='dice-main-container width-full flex '>
+                <div className='dice-main-container background-overlay border-radius--lg width-full flex'>
                     <div className='dice-container flex align-items--center justify-content--center width--full'>
-                        <div className='dice-wrapper '>
+                        <div className='dice-wrapper border-radius--30'>
                             <div
-                                className='dice'
+                                className='dice position--relative'
                                 style={{
                                     transform: transFormStyle,
                                     animation: diceAnimation,
                                 }}>
                                 {dice.map((data) => (
                                     <div
-                                        className={`face ${data} `}
+                                        className={`face ${data}`}
                                         key={data}
                                     />
                                 ))}
@@ -222,22 +222,22 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className='btn-container width--full flex align-items--center '>
-                    <div className='bet-wrapper text--center'>
+                <div className='btn-container background-overlay border-radius--lg width--full flex align-items--center'>
+                    <div className='bet-wrapper width--40 text--center'>
                         <p className='btn-title font-size--xxl mb--10'>BET</p>
-                        <div className='flex justify-content--end '>
+                        <div className='flex justify-content--end'>
                             <button
-                                className={`minus flex justify-content--center align-items--center mr--10 ${
+                                className={`minus custom-btn flex justify-content--center align-items--center mr--10 ${
                                     isPlay && 'disabled no-pointer-events'
                                 }`}
                                 onClick={() => decreaseValue(10)}>
                                 -
                             </button>
-                            <p className='bet-amount flex flex justify-content--center align-items--center font-size--lg font--semi-bold'>
+                            <p className='bet-amount custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold'>
                                 {betCount}
                             </p>
                             <button
-                                className={`minus flex justify-content--center align-items--center ml--10 ${
+                                className={`minus custom-btn flex justify-content--center align-items--center ml--10 ${
                                     isPlay && 'disabled no-pointer-events'
                                 }`}
                                 onClick={() => setBetCount(betCount + 10)}>
@@ -248,30 +248,30 @@ const Dashboard = () => {
 
                     <div
                         className={`${
-                            guessVal <= 0 && ' no-pointer-events  '
-                        } play-wrapper flex justify-content--center align-items--center `}>
+                            guessVal <= 0 && 'no-pointer-events'
+                        } play-wrapper width--20 flex justify-content--center align-items--center`}>
                         <button
-                            className='play-btn'
+                            className='play-btn border-radius--half custom-btn cursor--pointer font-size--25 text--white position--relative overflow--hidden'
                             disabled={guessVal <= 0}
                             onClick={getPlayData}>
                             {!isPlay && (
                                 <i
-                                    className='fa fa-play play flex justify-content--center align-items--center '
+                                    className='fa fa-play play flex justify-content--center align-items--center'
                                     id='play'></i>
                             )}
                             {isPlay && (
                                 <i
-                                    className='fa fa-square pause flex justify-content--center align-items--center'
+                                    className='fa fa-square flex justify-content--center align-items--center'
                                     id='pause'></i>
                             )}
                         </button>
                     </div>
-                    <div className='bet-wrapper text--start'>
+                    <div className='bet-wrapper width--40 text--start'>
                         <p className='win-btn-title font-size--xxl mb--10'>
                             WIN
                         </p>
                         <div className='flex justify-content--start'>
-                            <p className='bet-amount flex justify-content--center align-items--center font-size--lg font--semi-bold '>
+                            <p className='bet-amount  custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold '>
                                 {winAmount > 0 ? winAmount : 'Good Luck !'}
                             </p>
                         </div>

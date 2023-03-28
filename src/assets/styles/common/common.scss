@@ -811,7 +811,7 @@
 }
 
 .font-size--25 {
-    font-size: 1.5625rem;
+    font-size: 25px;
 }
 
 .font-size--26 {
@@ -1193,6 +1193,10 @@
     color: $black;
 }
 
+.text--white {
+    color: $white;
+}
+
 .bg--grey {
     @include getShadesColorClasses($grey, 'background-color');
 }
@@ -1288,6 +1292,7 @@
 .border-radius--100 {
     border-radius: 100px;
 }
+
 .border-radius--30 {
     border-radius: 30px;
 }
@@ -1347,6 +1352,7 @@
     color: getColor($red, 200);
     @include marginTop(10px);
 }
+
 .disabled {
     opacity: 0.5;
     cursor: not-allowed;
