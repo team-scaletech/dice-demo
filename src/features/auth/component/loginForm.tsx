@@ -69,7 +69,7 @@ const LoginForm: React.FC = () => {
         };
         HttpService.post(API_CONFIG.path.register, params).then((res) => {
             if (res.resultCode) {
-                notify(res.resultMessage, 'error');
+                notify('User already registered', 'error');
             }
         });
     };

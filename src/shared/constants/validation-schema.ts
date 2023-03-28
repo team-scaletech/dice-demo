@@ -12,7 +12,6 @@ const signUpFormValidationSchema = Yup.object().shape({
         .positive("A phone number can't start with a minus")
         .integer("A phone number can't include a decimal point")
         .min(10)
-        .max(10)
         .required('Please Enter Your Mobile Number'),
     email: Yup.string()
         .email('Please Enter Valid Email')

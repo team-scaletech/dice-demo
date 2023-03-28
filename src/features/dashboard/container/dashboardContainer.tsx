@@ -29,7 +29,7 @@ const Dashboard = () => {
     const [diceVal, setDiceVal] = useState(0);
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
-    const [walletAmount, setWalletAmount] = useState(0);
+    const [walletAmount, setWalletAmount] = useState();
     const [winAmount, setWinAmount] = useState(0);
     const [userId, setUserId] = useState('');
 
@@ -51,7 +51,6 @@ const Dashboard = () => {
             predictedNumber: guessVal,
             battedAmount: betCount,
         };
-
         HttpService.post(API_CONFIG.path.play, params)
             .then((res) => {
                 const { actualNumber, isWinner, battedAmount } = res.data;
@@ -150,9 +149,10 @@ const Dashboard = () => {
     const handleWallet = () => {
         HttpService.get(`${API_CONFIG.path.walletInfo}/${username}`)
             .then((res) => {
-                console.log('.then ~ res:', res);
                 setUserId(res.data.userId);
                 setWalletAmount(res.data.wallet.walletAmount);
+                res.data.wallet.walletAmount === 0 &&
+                    notify("You don't have sufficient balance", 'error');
             })
             .catch((err) => {
                 console.error(err, 'err');
@@ -268,7 +268,9 @@ const Dashboard = () => {
                         <button
                             className='play-btn border-radius--half custom-btn cursor--pointer font-size--25 text--white position--relative overflow--hidden'
                             disabled={guessVal <= 0}
-                            onClick={getPlayData}>
+                            onClick={() => {
+                                walletAmount !== 0 && getPlayData();
+                            }}>
                             <i
                                 className={`fa fa-${
                                     isPlay ? 'square' : 'play'
