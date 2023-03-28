@@ -56,8 +56,7 @@
                         height: 100px;
                         transform-style: preserve-3d;
                         transition: 1s ease;
-                        transform: rotateY(185deg) rotateX(150deg)
-                            rotateZ(315deg);
+                        transform: rotateY(185deg) rotateX(150deg) rotateZ(315deg);
 
                         &--width {
                             width: 80px;
@@ -94,11 +93,9 @@
                             height: 100%;
                             border-radius: 15px;
                             transform-style: preserve-3d;
-                            background: linear-gradient(
-                                145deg,
-                                #dddbd8,
-                                $white
-                            );
+                            background: linear-gradient(145deg,
+                                    #dddbd8,
+                                    $white );
 
                             &::after {
                                 position: absolute;
@@ -131,33 +128,25 @@
                             }
 
                             &--background {
-                                box-shadow: 12px 12px 16px 0
-                                        rgb(255 255 255 / 30%) inset,
+                                box-shadow: 12px 12px 16px 0 rgb(255 255 255 / 30%) inset,
                                     -8px -8px 12px 0 rgb(0 0 0 / 25%) inset;
-                                background-image: linear-gradient(
-                                    -90deg,
-                                    #c49f9f,
-                                    #808080
-                                );
+                                background-image: linear-gradient(-90deg,
+                                        #c49f9f,
+                                        #808080);
                             }
 
                             &--active {
-                                box-shadow: 5px 6px 16px 0
-                                        rgba(255, 255, 255, 0.3) inset,
+                                box-shadow: 5px 6px 16px 0 rgba(255, 255, 255, 0.3) inset,
                                     -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
-                                background: linear-gradient(
-                                    145deg,
-                                    #5fe8ff,
-                                    #006475
-                                );
+                                background: linear-gradient(145deg,
+                                        #5fe8ff,
+                                        #006475);
                             }
 
                             &--win {
-                                background: linear-gradient(
-                                    145deg,
-                                    #51ad2e,
-                                    #46cc22
-                                );
+                                background: linear-gradient(145deg,
+                                        #51ad2e,
+                                        #46cc22);
                             }
                         }
 
@@ -290,6 +279,7 @@
         }
     }
 }
+
 .logout-modal {
     .modal-dialog {
         display: flex;
@@ -298,6 +288,7 @@
         height: 100vh;
         max-width: 450px;
         transition: transform 0.3s ease-out;
+
         .modal-content {
             padding: 15px;
             border-radius: 10px;
@@ -309,11 +300,13 @@
             .modal-close-btn {
                 display: none;
             }
+
             .modal-body {
                 padding: 15px;
             }
         }
     }
+
     .button-wrapper {
         .submit-button {
             width: 170px;
@@ -325,15 +318,32 @@
             padding: 0;
             transition: 0.3s ease-in-out;
         }
+
         .ok-btn {
             background-image: linear-gradient(-90deg, #fcd614, #e97b00);
             text-shadow: 3px 3px #d24a0e;
         }
+
         .cancel-btn {
             background: linear-gradient(white, white) padding-box,
                 linear-gradient(-90deg, #fcd614, #e97b00) border-box;
             border: 2px solid transparent;
             color: #d24a0e;
+        }
+    }
+}
+
+.win-model {
+    .modal-dialog {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        max-width: 450px;
+        transition: transform 0.3s ease-out;
+
+        .modal-close-btn {
+            display: none;
         }
     }
 }

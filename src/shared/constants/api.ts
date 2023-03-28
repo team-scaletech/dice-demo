@@ -5,6 +5,7 @@ export const API_CONFIG = {
     baseUrl: `${process.env.REACT_APP_BASE_URL}`,
     path: {
         login: 'login/',
+        register: 'register',
         forget: 'password/forgot',
         reset: 'password/reset',
         play: 'play',

@@ -9,8 +9,12 @@ import { createAction } from 'shared/util/utility';
 import AuthService from 'shared/services/auth.service';
 import CustomModal from 'shared/modal/modal';
 import { notify } from 'shared/components/notification/notification';
+import { dice, staticDice } from 'shared/constants/constant';
 
 import yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
+import winAnimation from 'assets/lotties/winAnimation.json';
+import lostAnimation from 'assets/lotties/lostAnimation.json';
+
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
@@ -20,17 +24,21 @@ const Dashboard = () => {
     const [transFormStyle, setTransFormStyle] = useState('');
     const [isPlay, setIsPlay] = useState(false);
     const [logoutPopup, setLogoutPopup] = useState(false);
+    const [winPopup, setWinPopup] = useState('');
+
     const [diceVal, setDiceVal] = useState(0);
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
     const [walletAmount, setWalletAmount] = useState(0);
     const [winAmount, setWinAmount] = useState(0);
+    const [userId, setUserId] = useState('');
 
     const defaultOptions = {
         loop: true,
         autoplay: true,
         animationData: yellowDiceAnimation,
     };
+
     const userData = AuthService.getUserData();
     const { username, password } = userData;
 
@@ -39,7 +47,7 @@ const Dashboard = () => {
         setDiceAnimation('rolling 4s');
 
         const params = {
-            userId: '1',
+            userId: userId,
             predictedNumber: guessVal,
             battedAmount: betCount,
         };
@@ -52,11 +60,14 @@ const Dashboard = () => {
                     setIsPlay(false);
                     handleWallet();
                     isWinner && setWinAmount(battedAmount * 5);
+                    setWinPopup(isWinner ? 'win' : 'loss');
                 }, 4550);
 
                 setTimeout(() => {
+                    setWinPopup('');
                     setDiceVal(0);
                     setGuessVal(0);
+                    setWinAmount(0);
                 }, 8000);
 
                 rollDice(actualNumber);
@@ -139,6 +150,8 @@ const Dashboard = () => {
     const handleWallet = () => {
         HttpService.get(`${API_CONFIG.path.walletInfo}/${username}`)
             .then((res) => {
+                console.log('.then ~ res:', res);
+                setUserId(res.data.userId);
                 setWalletAmount(res.data.wallet.walletAmount);
             })
             .catch((err) => {
@@ -161,7 +174,6 @@ const Dashboard = () => {
                             width={50}
                         />
                     </div>
-
                     <div className='curve-wrapper custom-btn flex align-items--center justify-content--center  position--relative overflow--hidden'>
                         <button className='curve-btn text--white border-radius--30 font-size--lg'>
                             {walletAmount}
@@ -192,7 +204,6 @@ const Dashboard = () => {
                                     />
                                 ))}
                             </div>
-
                             <div
                                 className={`dice-side-wrapper flex  mt--50  ${
                                     isPlay && 'disabled no-pointer-events'
@@ -213,7 +224,8 @@ const Dashboard = () => {
                                             } `}
                                             onClick={() =>
                                                 setGuessVal(index + 1)
-                                            }></div>
+                                            }
+                                        />
                                     </div>
                                 ))}
                             </div>
@@ -260,7 +272,8 @@ const Dashboard = () => {
                             <i
                                 className={`fa fa-${
                                     isPlay ? 'square' : 'play'
-                                } flex justify-content--center align-items--center`}></i>
+                                } flex justify-content--center align-items--center`}
+                            />
                         </button>
                     </div>
                     <div className='bet-wrapper width--40 text--start'>
@@ -299,11 +312,33 @@ const Dashboard = () => {
                     </div>
                 </CustomModal>
             )}
+            {winPopup && winPopup.length > 0 && (
+                <CustomModal
+                    show={true}
+                    handleClose={function (): void | undefined {
+                        throw new Error('Function not implemented.');
+                    }}
+                    className='win-model'>
+                    <div>
+                        <div className='dice-animation no--margin'>
+                            <Lottie
+                                options={{
+                                    animationData:
+                                        winPopup === 'win'
+                                            ? winAnimation
+                                            : lostAnimation,
+                                    loop: false,
+                                    autoplay: false,
+                                }}
+                                height={winPopup === 'win' ? 200 : 300}
+                                width={winPopup === 'win' ? 200 : 300}
+                            />
+                        </div>
+                    </div>
+                </CustomModal>
+            )}
         </div>
     );
 };
-
-const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
-const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
 
 export default Dashboard;
