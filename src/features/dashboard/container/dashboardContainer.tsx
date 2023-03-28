@@ -3,14 +3,14 @@ import Lottie from 'react-lottie';
 import { useDispatch } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
-import * as yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
-
 import HttpService from 'shared/services/http.service';
 import { API_CONFIG } from 'shared/constants/api';
 import { createAction } from 'shared/util/utility';
 import AuthService from 'shared/services/auth.service';
 import CustomModal from 'shared/modal/modal';
 import { notify } from 'shared/components/notification/notification';
+
+import yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
 import '../style/dashboard.scss';
 
 const Dashboard = () => {
@@ -194,7 +194,10 @@ const Dashboard = () => {
                                 ))}
                             </div>
 
-                            <div className='dice-side-wrapper flex  mt--50 '>
+                            <div
+                                className={`dice-side-wrapper flex  mt--50  ${
+                                    isPlay && 'disabled no-pointer-events'
+                                }`}>
                                 {staticDice.map((data, index: number) => (
                                     <div
                                         className={`dice dice--width cursor--pointer  dice--${
@@ -208,7 +211,7 @@ const Dashboard = () => {
                                             } ${
                                                 index + 1 === diceVal &&
                                                 'face--win'
-                                            }`}
+                                            } `}
                                             onClick={() =>
                                                 setGuessVal(index + 1)
                                             }></div>
@@ -222,9 +225,11 @@ const Dashboard = () => {
                 <div className='btn-container width--full flex align-items--center '>
                     <div className='bet-wrapper text--center'>
                         <p className='btn-title font-size--xxl mb--10'>BET</p>
-                        <div className='flex justify-content--end'>
+                        <div className='flex justify-content--end '>
                             <button
-                                className='minus flex justify-content--center align-items--center mr--10'
+                                className={`minus flex justify-content--center align-items--center mr--10 ${
+                                    isPlay && 'disabled no-pointer-events'
+                                }`}
                                 onClick={() => decreaseValue(10)}>
                                 -
                             </button>
@@ -232,7 +237,9 @@ const Dashboard = () => {
                                 {betCount}
                             </p>
                             <button
-                                className='minus flex justify-content--center align-items--center ml--10'
+                                className={`minus flex justify-content--center align-items--center ml--10 ${
+                                    isPlay && 'disabled no-pointer-events'
+                                }`}
                                 onClick={() => setBetCount(betCount + 10)}>
                                 +
                             </button>
@@ -277,17 +284,17 @@ const Dashboard = () => {
                     handleClose={() => setLogoutPopup(false)}
                     className='logout-modal'>
                     <div>
-                        <p className='logout-title font-size--xl text--center mb--30 '>
+                        <p className='text--black font-size--xxl text--center mb--30 '>
                             Are you sure you want to logout?
                         </p>
-                        <div className='button-wrapper flex justify-content--center'>
+                        <div className='button-wrapper flex justify-content--center '>
                             <button
-                                className=' button ok-btn mr--10'
+                                className='submit-button ok-btn mr--10 text--white'
                                 onClick={logOut}>
                                 yes
                             </button>
                             <button
-                                className=' button cancel-btn'
+                                className='submit-button cancel-btn'
                                 onClick={() => setLogoutPopup(false)}>
                                 No
                             </button>
