@@ -1365,3 +1365,8 @@
 .no-pointer-events {
     pointer-events: none;
 }
+.modal-dialog {
+    position: relative;
+    margin: 0 auto;
+    width: auto;
+}

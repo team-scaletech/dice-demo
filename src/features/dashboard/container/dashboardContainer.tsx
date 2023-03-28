@@ -1,105 +1,160 @@
-import { useState } from "react";
-import Lottie from "react-lottie";
-import * as yellowDiceAnimation from "assets/lotties/whiteDiceAnimation.json";
-import HttpService from "shared/services/http.service";
-import { API_CONFIG } from "shared/constants/api";
+import { useEffect, useState } from 'react';
+import Lottie from 'react-lottie';
+import { useDispatch } from 'react-redux';
+import * as actionTypes from 'store/actionTypes';
 
-import "../style/dashboard.scss";
+import HttpService from 'shared/services/http.service';
+import { API_CONFIG } from 'shared/constants/api';
+import { createAction } from 'shared/util/utility';
+import AuthService from 'shared/services/auth.service';
+import CustomModal from 'shared/modal/modal';
+import { notify } from 'shared/components/notification/notification';
+
+import yellowDiceAnimation from 'assets/lotties/whiteDiceAnimation.json';
+import '../style/dashboard.scss';
 
 const Dashboard = () => {
-    const [diceAnimation, setDiceAnimation] = useState("");
-    const [transFormStyle, setTransFormStyle] = useState("");
-    const [diceVal, setDiceVal] = useState(0);
+    const dispatch = useDispatch();
+
+    const [diceAnimation, setDiceAnimation] = useState('');
+    const [transFormStyle, setTransFormStyle] = useState('');
     const [isPlay, setIsPlay] = useState(false);
+    const [logoutPopup, setLogoutPopup] = useState(false);
+    const [diceVal, setDiceVal] = useState(0);
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
+    const [walletAmount, setWalletAmount] = useState(0);
+    const [winAmount, setWinAmount] = useState(0);
+
     const defaultOptions = {
         loop: true,
         autoplay: true,
         animationData: yellowDiceAnimation,
     };
+    const userData = AuthService.getUserData();
+    const { username, password } = userData;
 
-    const handleDiceClick = () => {
+    const getPlayData = () => {
         setIsPlay(true);
-        const random = Math.floor(Math.random() * 7);
+        setDiceAnimation('rolling 4s');
 
-        if (random >= 1 && random <= 6) {
-            setDiceAnimation("rolling 4s");
-            setTimeout(() => {
-                setDiceVal(random);
-            }, 4550);
+        const params = {
+            userId: '1',
+            predictedNumber: guessVal,
+            battedAmount: betCount,
+        };
 
-            rollDice(random);
-        } else {
-            handleDiceClick();
-        }
+        HttpService.post(API_CONFIG.path.play, params)
+            .then((res) => {
+                const { actualNumber, isWinner, battedAmount } = res.data;
+                setTimeout(() => {
+                    setDiceVal(actualNumber);
+                    setIsPlay(false);
+                    handleWallet();
+                    isWinner && setWinAmount(battedAmount * 5);
+                }, 4550);
+
+                setTimeout(() => {
+                    setDiceVal(0);
+                    setGuessVal(0);
+                }, 8000);
+
+                rollDice(actualNumber);
+            })
+            .catch((err) => {
+                console.error(err, 'err');
+                setTimeout(() => {
+                    setIsPlay(false);
+                    notify(
+                        'User does not have sufficient balance to roll dice.',
+                        'error'
+                    );
+                }, 4550);
+
+                err.code === 401 && handleLogin();
+            });
     };
 
-    // const getPlayData = () => {
-    //     setDiceAnimation("rolling 4s");
-
-    //     const params = {
-    //         userId: "0ec769a6-d851-448d-9787-c6add13a61cc",
-    //         predictedNumber: guessVal,
-    //         battedAmount: betCount,
-    //     };
-
-    //     HttpService.post(API_CONFIG.path.play, params)
-    //         .then((res) => {
-    //             console.log(res, "res");
-    //         })
-    //         .catch((err: Error) => {
-    //             console.log(err);
-    //         });
-
-    //     /*		setTimeout(() => {
-    // 		setDiceVal(random);
-    // 	}, 4550);*/
-
-    //     // rollDice(random);
-    // };
-
     const rollDice = (random: number) => {
-        let transFormStyle = "";
+        let transFormStyle = '';
         setTimeout(() => {
             switch (random) {
                 case 1:
-                    transFormStyle = "rotateX(0deg) rotateY(0deg)";
+                    transFormStyle = 'rotateX(0deg) rotateY(0deg)';
                     break;
                 case 6:
-                    transFormStyle = "rotateX(180deg) rotateY(0deg)";
+                    transFormStyle = 'rotateX(180deg) rotateY(0deg)';
                     break;
 
                 case 2:
-                    transFormStyle = "rotateX(-90deg) rotateY(0deg)";
+                    transFormStyle = 'rotateX(-90deg) rotateY(0deg)';
                     break;
 
                 case 5:
-                    transFormStyle = "rotateX(90deg) rotateY(0deg)";
+                    transFormStyle = 'rotateX(90deg) rotateY(0deg)';
                     break;
 
                 case 3:
-                    transFormStyle = "rotateX(0deg) rotateY(90deg)";
+                    transFormStyle = 'rotateX(0deg) rotateY(90deg)';
                     break;
 
                 case 4:
-                    transFormStyle = "rotateX(0deg) rotateY(-90deg)";
+                    transFormStyle = 'rotateX(0deg) rotateY(-90deg)';
                     break;
 
                 default:
                     break;
             }
-            setDiceAnimation("none");
+            setDiceAnimation('none');
             setIsPlay(false);
             setTransFormStyle(transFormStyle);
         }, 4050);
     };
 
+    const handleLogin = () => {
+        const params = {
+            username: username,
+            password: password,
+        };
+        HttpService.post(API_CONFIG.path.login, params)
+            .then((res) => {
+                const { data } = res;
+                data && AuthService.setAuthData(data);
+                dispatch(createAction(actionTypes.AUTH_SUCCESS));
+                dispatch(createAction(actionTypes.UPDATE_USER_DATA, data));
+                getPlayData();
+            })
+            .catch((err: Error) => {
+                dispatch(createAction(actionTypes.AUTH_FAILED));
+                console.error('Error', err);
+            });
+    };
+
+    const logOut = () => {
+        dispatch(createAction(actionTypes.AUTH_LOGOUT));
+
+        notify('Admin successfully logged out.', 'success');
+    };
+
+    const handleWallet = () => {
+        HttpService.get(`${API_CONFIG.path.walletInfo}/${username}`)
+            .then((res) => {
+                setWalletAmount(res.data.wallet.walletAmount);
+            })
+            .catch((err) => {
+                console.error(err, 'err');
+            });
+    };
+
+    useEffect(() => {
+        handleWallet();
+    }, []);
+
     return (
-        <div className="main-container flex">
-            <div className="dashboard-wrapper width--full">
-                <div className="header-wrapper width--full flex justify-content--between">
-                    <div className="animation-wrapper custom-btn border-radius--half overflow--hidden ml--10 mt--10">
+        <div className='main-container flex'>
+            <div className='dashboard-wrapper width--full'>
+                <div className='header-wrapper width--full flex justify-content--between'>
+                    <div className='animation-wrapper custom-btn border-radius--half overflow--hidden ml--10 mt--10'>
                         <Lottie
                             options={defaultOptions}
                             height={50}
@@ -107,23 +162,25 @@ const Dashboard = () => {
                         />
                     </div>
 
-                    <div className="curve-wrapper custom-btn flex align-items--center justify-content--center  position--relative overflow--hidden">
-                        <button className="curve-btn text--white border-radius--30 font-size--lg">
-                            2500
+                    <div className='curve-wrapper custom-btn flex align-items--center justify-content--center  position--relative overflow--hidden'>
+                        <button className='curve-btn text--white border-radius--30 font-size--lg'>
+                            {walletAmount}
                         </button>
                     </div>
-                    <div className="flex">
-                        <button className="custom-btn setting-btn mr--20 border-radius--half mt--15">
-                            <i className="font-size--30 fa fa-gear text--white" />
+                    <div className='flex'>
+                        <button
+                            className='custom-btn setting-btn mr--20 border-radius--half mt--15'
+                            onClick={() => setLogoutPopup(true)}>
+                            <i className='font-size--30 fa fa-gear text--white' />
                         </button>
                     </div>
                 </div>
 
-                <div className="dice-main-container background-overlay border-radius--lg width-full flex">
-                    <div className="dice-container flex align-items--center justify-content--center width--full">
-                        <div className="dice-wrapper border-radius--30">
+                <div className='dice-main-container background-overlay border-radius--lg width-full flex'>
+                    <div className='dice-container flex align-items--center justify-content--center width--full'>
+                        <div className='dice-wrapper border-radius--30'>
                             <div
-                                className="dice position--relative"
+                                className='dice position--relative'
                                 style={{
                                     transform: transFormStyle,
                                     animation: diceAnimation,
@@ -136,21 +193,24 @@ const Dashboard = () => {
                                 ))}
                             </div>
 
-                            <div className="dice-side-wrapper flex  mt--50">
+                            <div
+                                className={`dice-side-wrapper flex  mt--50  ${
+                                    isPlay && 'disabled no-pointer-events'
+                                }`}>
                                 {staticDice.map((data, index) => (
                                     <div
-                                        className={`dice cursor--pointer dice--${
+                                        className={`dice dice--width cursor--pointer  dice--${
                                             index + 1
                                         }`}
                                         key={index}>
                                         <div
                                             className={`face face--small-dice face--background ${data} ${
                                                 index + 1 === guessVal &&
-                                                "face--active "
+                                                'face--active '
                                             } ${
                                                 index + 1 === diceVal &&
-                                                "face--win"
-                                            }`}
+                                                'face--win'
+                                            } `}
                                             onClick={() =>
                                                 setGuessVal(index + 1)
                                             }></div>
@@ -161,12 +221,14 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="btn-container background-overlay border-radius--lg width--full flex align-items--center">
-                    <div className="bet-wrapper width--40 text--center">
-                        <p className="btn-title font-size--xxl mb--10">BET</p>
-                        <div className="flex justify-content--end">
+                <div className='btn-container background-overlay border-radius--lg width--full flex align-items--center'>
+                    <div className='bet-wrapper width--40 text--center'>
+                        <p className='btn-title font-size--xxl mb--10'>BET</p>
+                        <div className='flex justify-content--end'>
                             <button
-                                className="minus custom-btn flex justify-content--center align-items--center mr--10"
+                                className={`minus custom-btn flex justify-content--center align-items--center mr--10 ${
+                                    isPlay && 'disabled no-pointer-events'
+                                }`}
                                 onClick={() =>
                                     setBetCount(
                                         betCount > 10 ? betCount - 10 : betCount
@@ -174,11 +236,13 @@ const Dashboard = () => {
                                 }>
                                 -
                             </button>
-                            <p className="bet-amount custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold">
+                            <p className='bet-amount custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold'>
                                 {betCount}
                             </p>
                             <button
-                                className="minus custom-btn flex justify-content--center align-items--center ml--10"
+                                className={`minus custom-btn flex justify-content--center align-items--center ml--10 ${
+                                    isPlay && 'disabled no-pointer-events'
+                                }`}
                                 onClick={() => setBetCount(betCount + 10)}>
                                 +
                             </button>
@@ -187,41 +251,59 @@ const Dashboard = () => {
 
                     <div
                         className={`${
-                            guessVal <= 0 && "no-pointer-events"
+                            guessVal <= 0 && 'no-pointer-events'
                         } play-wrapper width--20 flex justify-content--center align-items--center`}>
                         <button
-                            className="play-btn border-radius--half custom-btn cursor--pointer font-size--25 text--white position--relative overflow--hidden"
+                            className='play-btn border-radius--half custom-btn cursor--pointer font-size--25 text--white position--relative overflow--hidden'
                             disabled={guessVal <= 0}
-                            onClick={handleDiceClick}>
-                            {!isPlay && (
-                                <i
-                                    className="fa fa-play play flex justify-content--center align-items--center"
-                                    id="play"></i>
-                            )}
-                            {isPlay && (
-                                <i
-                                    className="fa fa-square flex justify-content--center align-items--center"
-                                    id="pause"></i>
-                            )}
+                            onClick={getPlayData}>
+                            <i
+                                className={`fa fa-${
+                                    isPlay ? 'square' : 'play'
+                                } flex justify-content--center align-items--center`}></i>
                         </button>
                     </div>
-                    <div className="bet-wrapper width--40 text--start">
-                        <p className="win-btn-title font-size--xxl mb--10">
+                    <div className='bet-wrapper width--40 text--start'>
+                        <p className='win-btn-title font-size--xxl mb--10'>
                             WIN
                         </p>
-                        <div className="flex justify-content--start">
-                            <p className="bet-amount custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold">
-                                600.00
+                        <div className='flex justify-content--start'>
+                            <p className='bet-amount  custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold '>
+                                {winAmount > 0 ? winAmount : 'Good Luck !'}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+            {logoutPopup && (
+                <CustomModal
+                    show={true}
+                    handleClose={() => setLogoutPopup(false)}
+                    className='logout-modal'>
+                    <div>
+                        <p className='text--black font-size--xxl text--center mb--30 '>
+                            Are you sure you want to logout?
+                        </p>
+                        <div className='button-wrapper flex justify-content--center '>
+                            <button
+                                className='submit-button ok-btn mr--10 text--white'
+                                onClick={logOut}>
+                                yes
+                            </button>
+                            <button
+                                className='submit-button cancel-btn'
+                                onClick={() => setLogoutPopup(false)}>
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </CustomModal>
+            )}
         </div>
     );
 };
 
-const dice = ["front", "back", "top", "bottom", "right", "left"];
-const staticDice = ["front", "top", "left", "right", "bottom", "back"];
+const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
+const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
 
 export default Dashboard;
