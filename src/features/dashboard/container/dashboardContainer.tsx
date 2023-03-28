@@ -20,7 +20,7 @@ const Dashboard = () => {
     const [transFormStyle, setTransFormStyle] = useState('');
     const [isPlay, setIsPlay] = useState(false);
     const [logoutPopup, setLogoutPopup] = useState(false);
-    const [diceVal, setDiceVal] = useState();
+    const [diceVal, setDiceVal] = useState(0);
     const [guessVal, setGuessVal] = useState(0);
     const [betCount, setBetCount] = useState(10);
     const [walletAmount, setWalletAmount] = useState(0);
@@ -33,11 +33,6 @@ const Dashboard = () => {
     };
     const userData = AuthService.getUserData();
     const { username, password } = userData;
-
-    const decreaseValue = (betCount: number) => {
-        betCount - 10;
-        setBetCount(betCount);
-    };
 
     const getPlayData = () => {
         setIsPlay(true);
@@ -58,6 +53,11 @@ const Dashboard = () => {
                     handleWallet();
                     isWinner && setWinAmount(battedAmount * 5);
                 }, 4550);
+
+                setTimeout(() => {
+                    setDiceVal(0);
+                    setGuessVal(0);
+                }, 8000);
 
                 rollDice(actualNumber);
             })
@@ -132,8 +132,7 @@ const Dashboard = () => {
 
     const logOut = () => {
         dispatch(createAction(actionTypes.AUTH_LOGOUT));
-        AuthService.removeAuthData();
-        AuthService.removeUserInfo();
+
         notify('Admin successfully logged out.', 'success');
     };
 
@@ -198,7 +197,7 @@ const Dashboard = () => {
                                 className={`dice-side-wrapper flex  mt--50  ${
                                     isPlay && 'disabled no-pointer-events'
                                 }`}>
-                                {staticDice.map((data, index: number) => (
+                                {staticDice.map((data, index) => (
                                     <div
                                         className={`dice dice--width cursor--pointer  dice--${
                                             index + 1
@@ -230,7 +229,11 @@ const Dashboard = () => {
                                 className={`minus custom-btn flex justify-content--center align-items--center mr--10 ${
                                     isPlay && 'disabled no-pointer-events'
                                 }`}
-                                onClick={() => decreaseValue(10)}>
+                                onClick={() =>
+                                    setBetCount(
+                                        betCount > 10 ? betCount - 10 : betCount
+                                    )
+                                }>
                                 -
                             </button>
                             <p className='bet-amount custom-btn flex justify-content--center align-items--center font-size--lg font--semi-bold'>
@@ -254,16 +257,10 @@ const Dashboard = () => {
                             className='play-btn border-radius--half custom-btn cursor--pointer font-size--25 text--white position--relative overflow--hidden'
                             disabled={guessVal <= 0}
                             onClick={getPlayData}>
-                            {!isPlay && (
-                                <i
-                                    className='fa fa-play play flex justify-content--center align-items--center'
-                                    id='play'></i>
-                            )}
-                            {isPlay && (
-                                <i
-                                    className='fa fa-square flex justify-content--center align-items--center'
-                                    id='pause'></i>
-                            )}
+                            <i
+                                className={`fa fa-${
+                                    isPlay ? 'square' : 'play'
+                                } flex justify-content--center align-items--center`}></i>
                         </button>
                     </div>
                     <div className='bet-wrapper width--40 text--start'>
