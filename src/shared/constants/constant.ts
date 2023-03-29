@@ -4,13 +4,23 @@ const logInInitialValues = {
 };
 
 const signUpInitialValues = {
-    username: '',
-    password: '',
+    ...logInInitialValues,
     email: '',
     mobileNo: '',
 };
 
+const signUpValue = [
+    { name: 'password', placeholder: 'Enter Your Mobile Number' },
+    { name: 'email', placeholder: 'Enter Your Email' },
+];
+
 const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
 const staticDice = ['front', 'top', 'left', 'right', 'bottom', 'back'];
 
-export { logInInitialValues, signUpInitialValues, dice, staticDice };
+export {
+    logInInitialValues,
+    signUpInitialValues,
+    dice,
+    staticDice,
+    signUpValue,
+};

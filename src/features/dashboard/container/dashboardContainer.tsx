@@ -47,7 +47,7 @@ const Dashboard = () => {
         setDiceAnimation('rolling 4s');
 
         const params = {
-            userId: userId,
+            userId,
             predictedNumber: guessVal,
             battedAmount: betCount,
         };

@@ -14,9 +14,9 @@ const signUpFormValidationSchema = Yup.object().shape({
         .min(10)
         .required('Please Enter Your Mobile Number'),
     email: Yup.string()
-        .email('Please Enter Valid Email')
         .required('Please Enter Email')
-        .strict(true),
+        .strict(true)
+        .email('Please Enter Valid Email'),
     password: Yup.string().required('Please Enter Password').strict(true),
 });
 

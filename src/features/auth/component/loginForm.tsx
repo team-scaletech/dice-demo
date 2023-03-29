@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Formik, FormikValues, Field, ErrorMessage, Form } from 'formik';
 
@@ -16,6 +15,7 @@ import { notify } from 'shared/components/notification/notification';
 import {
     logInInitialValues,
     signUpInitialValues,
+    signUpValue,
 } from 'shared/constants/constant';
 import {
     loginFormValidationSchema,
@@ -29,19 +29,13 @@ const LoginForm: React.FC = () => {
     const [uuid, setUuid] = useState('');
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleLogin = useCallback(
         (values: FormikValues) => {
-            const params = {
-                username: values.username,
-                password: values.password,
-            };
             AuthService.setUserData(values);
             setLoading(true);
-            HttpService.post(API_CONFIG.path.login, params).then((res) => {
-                const { data, userId, totalAmount, resultMessage, resultCode } =
-                    res;
+            HttpService.post(API_CONFIG.path.login, values).then((res) => {
+                const { data, resultMessage, resultCode } = res;
 
                 if (resultCode === 1002) {
                     setLoading(false);
@@ -61,13 +55,8 @@ const LoginForm: React.FC = () => {
     );
 
     const handleRegister = (values: FormikValues) => {
-        const params = {
-            name: values.username,
-            password: values.password,
-            email: values.email,
-            mobileNo: values.number.toString(),
-        };
-        HttpService.post(API_CONFIG.path.register, params).then((res) => {
+        console.log('handleRegister ~ values:', values);
+        HttpService.post(API_CONFIG.path.register, values).then((res) => {
             if (res.resultCode) {
                 notify('User already registered', 'error');
             }
@@ -99,7 +88,7 @@ const LoginForm: React.FC = () => {
                 <div className='form-item mb--25 position--relative'>
                     <Field
                         name='username'
-                        type='username'
+                        type='text'
                         className='input-field'
                         autoComplete='off'
                         placeholder='Enter Your Name'
@@ -112,34 +101,24 @@ const LoginForm: React.FC = () => {
                 </div>
                 {signUp && (
                     <>
-                        <div className='form-item mb--25 position--relative'>
-                            <Field
-                                name='number'
-                                type='number'
-                                className='input-field'
-                                autoComplete='off'
-                                placeholder='Enter Your Mobile Number'
-                            />
-                            <ErrorMessage
-                                name='number'
-                                component='p'
-                                className='error font-size--sm pl--10 pt--5'
-                            />
-                        </div>
-                        <div className='form-item mb--25 position--relative'>
-                            <Field
-                                name='email'
-                                type='email'
-                                className='input-field'
-                                autoComplete='off'
-                                placeholder='Enter Your Email'
-                            />
-                            <ErrorMessage
-                                name='email'
-                                component='p'
-                                className='error font-size--sm pl--10 pt--5'
-                            />
-                        </div>
+                        {signUpValue.map(({ name, placeholder }, index) => (
+                            <div
+                                key={index}
+                                className='form-item mb--25 position--relative'>
+                                <Field
+                                    name={name}
+                                    type={name}
+                                    className='input-field'
+                                    autoComplete='off'
+                                    placeholder={placeholder}
+                                />
+                                <ErrorMessage
+                                    name={name}
+                                    component='p'
+                                    className='error font-size--sm pl--10 pt--5'
+                                />
+                            </div>
+                        ))}
                     </>
                 )}
                 <div className='form-item mb--45 position--relative'>
