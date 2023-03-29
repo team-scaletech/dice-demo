@@ -1350,7 +1350,7 @@
 
 .error {
     color: getColor($red, 200);
-    @include marginTop(10px);
+    @include marginTop(5px);
 }
 
 .disabled {
@@ -1365,6 +1365,7 @@
 .no-pointer-events {
     pointer-events: none;
 }
+
 .modal-dialog {
     position: relative;
     margin: 0 auto;

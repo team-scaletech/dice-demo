@@ -4,14 +4,19 @@ const logInInitialValues = {
 };
 
 const signUpInitialValues = {
-    ...logInInitialValues,
+    username: '',
     email: '',
     mobileNo: '',
+    password: '',
 };
 
 const signUpValue = [
-    { name: 'number', placeholder: 'Enter Your Mobile Number' },
-    { name: 'email', placeholder: 'Enter Your Email' },
+    {
+        name: 'mobileNo',
+        placeholder: 'Enter Your Mobile Number',
+        type: 'number',
+    },
+    { name: 'email', placeholder: 'Enter Your Email', type: 'email' },
 ];
 
 const dice = ['front', 'back', 'top', 'bottom', 'right', 'left'];
