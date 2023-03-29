@@ -10,7 +10,7 @@ const signUpInitialValues = {
 };
 
 const signUpValue = [
-    { name: 'password', placeholder: 'Enter Your Mobile Number' },
+    { name: 'number', placeholder: 'Enter Your Mobile Number' },
     { name: 'email', placeholder: 'Enter Your Email' },
 ];
 
