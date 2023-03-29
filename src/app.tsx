@@ -8,7 +8,6 @@ import Login from 'features/auth/container/login';
 import ForgotPassword from 'features/auth/component/forgotPassword';
 import ResetPassword from 'features/auth/component/resetPassword';
 import Dashboard from 'features/dashboard/container/dashboardContainer';
-import SignUp from 'features/auth/component/signUp';
 
 const App: React.FC = () => {
     const isLogin = useSelector((state: IState) => state.auth.isLogin);
@@ -27,7 +26,6 @@ const App: React.FC = () => {
         return (
             <Routes>
                 <Route path='/login' element={<Login />} />
-                {/* <Route path='/signUp' element={<SignUp />} /> */}
                 <Route path='/forgot-password' element={<ForgotPassword />} />
                 <Route
                     path='/reset-password/:token'

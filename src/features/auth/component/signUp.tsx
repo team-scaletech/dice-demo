@@ -41,20 +41,6 @@ const SignUp: React.FC<ILoginProps> = ({ handleSignUp }) => {
             validateOnMount>
             {({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className='form-item mb--25 position--relative'>
-                        <Field
-                            name='username'
-                            type='text'
-                            className='input-field'
-                            autoComplete='off'
-                            placeholder='Enter Your Name'
-                        />
-                        <ErrorMessage
-                            name='username'
-                            component='p'
-                            className='error font-size--sm pl--10'
-                        />
-                    </div>
                     {signUpValue.map(({ name, placeholder, type }, index) => (
                         <div
                             key={index}
