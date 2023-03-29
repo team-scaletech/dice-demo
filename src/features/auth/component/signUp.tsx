@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ErrorMessage, Field, Formik, FormikValues } from 'formik';
 
 import { API_CONFIG } from 'shared/constants/api';
@@ -19,11 +18,15 @@ interface ILoginProps {
 const SignUp: React.FC<ILoginProps> = ({ handleSignUp }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     const handleRegister = (values: FormikValues) => {
+        const params = {
+            ...values,
+            mobileNo: values.mobileNo.toString(),
+        };
         setLoading(true);
-        HttpService.post(API_CONFIG.path.register, values).then((res) => {
+        HttpService.post(API_CONFIG.path.register, params).then((res) => {
+            handleSignUp();
             if (res.resultCode) {
                 notify('User already registered', 'error');
                 setLoading(false);

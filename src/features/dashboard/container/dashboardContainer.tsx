@@ -58,7 +58,7 @@ const Dashboard = () => {
                     setDiceVal(actualNumber);
                     setIsPlay(false);
                     handleWallet();
-                    isWinner && setWinAmount(battedAmount * 5);
+                    isWinner && setWinAmount(battedAmount * 4);
                     setWinPopup(isWinner ? 'win' : 'loss');
                 }, 4550);
 

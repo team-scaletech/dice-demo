@@ -6,7 +6,7 @@ const loginFormValidationSchema = Yup.object().shape({
 });
 
 const signUpFormValidationSchema = Yup.object().shape({
-    username: Yup.string().required('Please Enter Your Name').strict(true),
+    name: Yup.string().required('Please Enter Your Name').strict(true),
     mobileNo: Yup.number()
         .typeError("That doesn't look like a phone number")
         .positive("A phone number can't start with a minus")

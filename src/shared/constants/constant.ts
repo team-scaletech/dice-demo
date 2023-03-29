@@ -4,13 +4,14 @@ const logInInitialValues = {
 };
 
 const signUpInitialValues = {
-    ...logInInitialValues,
+    name: '',
+    password: '',
     email: '',
     mobileNo: '',
 };
 
 const signUpValue = [
-    { name: 'username', placeholder: 'Enter Your Name', type: 'text' },
+    { name: 'name', placeholder: 'Enter Your Name', type: 'text' },
     {
         name: 'mobileNo',
         placeholder: 'Enter Your Mobile Number',
