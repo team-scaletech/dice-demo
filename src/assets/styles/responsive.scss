@@ -1,72 +1,447 @@
 @media screen and (max-height: 1430px) {
-	.login-wrapper {
-		padding: 30px;
-	}
+    .login-wrapper {
+        padding: 30px;
+    }
+}
+@media screen and (max-height: 800px) and (min-height: 600px) {
+    .main-container {
+        .dashboard-wrapper {
+            .dice-main-container {
+                height: calc(100vh - 285px);
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .main-container {
+        .dashboard-wrapper {
+            .btn-container {
+                gap: 30px;
+
+                .bet-wrapper {
+                    margin-left: 20px;
+
+                    .btn-title {
+                        margin-left: 0px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .main-container {
+        .dashboard-wrapper {
+            .dice-main-container {
+                .dice-container {
+                    .dice-wrapper {
+                        .dice-side-wrapper {
+                            gap: 15px;
+                        }
+
+                        .dice--width {
+                            width: 60px;
+                            height: 60px;
+
+                            .face {
+                                border-radius: 10px;
+                            }
+
+                            .face--small-dice {
+                                &::after {
+                                    height: 10px;
+                                    width: 10px;
+                                    top: 57%;
+                                    left: 58%;
+                                }
+                            }
+
+                            .top {
+                                &::after {
+                                    margin: -27px 0 0 -28px;
+                                    box-shadow: 36px 34px #000;
+                                }
+                            }
+
+                            .left {
+                                &::after {
+                                    margin: -27px 0 0 -28px;
+                                    box-shadow: 18px 18px #000, 37px 35px #000;
+                                }
+                            }
+
+                            .right {
+                                &::after {
+                                    margin: -26px 0 0 -27px;
+                                    box-shadow: 35px 0 #000, 0 34px #000,
+                                        35px 35px #000;
+                                }
+                            }
+
+                            .bottom {
+                                &::after {
+                                    margin: -30px 0 0 -31px;
+                                    box-shadow: 21px 20px #000, 42px 40px #000,
+                                        42px 0 #000, 0 40px #000;
+                                }
+                            }
+
+                            .back {
+                                &::after {
+                                    margin: -30px 0 0 -26px;
+                                    box-shadow: 32px 0 #000, 0 20px #000,
+                                        32px 20px #000, 0 41px #000,
+                                        32px 41px #000;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .btn-container {
+                gap: 10px;
+
+                .bet-wrapper {
+                    .bet-amount {
+                        width: calc(100% - 80px);
+                    }
+                }
+
+                .play-wrapper {
+                    .play-btn {
+                        width: 80px;
+                        height: 80px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-container {
+        .dashboard-wrapper {
+            .background-overlay {
+                max-width: calc(100% - 50px);
+            }
+
+            .dice-main-container {
+                margin-top: 50px;
+
+                .dice-container {
+                    //height: 480px;
+                }
+            }
+
+            .btn-container {
+                .bet-wrapper {
+                    .btn-title {
+                        font-size: $font-size-browser-default;
+                    }
+
+                    .win-btn-title {
+                        margin-left: 50px;
+                        font-size: $font-size-browser-default;
+                    }
+
+                    .bet-amount {
+                        font-size: $font-size-browser-default;
+                        width: calc(100% - 60px);
+                    }
+                    .minus {
+                        width: 70px;
+                    }
+                }
+            }
+
+            .header-wrapper {
+                .curve-wrapper {
+                    width: 250px;
+                    height: 65px;
+
+                    .curve-btn {
+                        height: 37px;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 600px) {
-	.login-wrapper {
-		max-width: 300px;
-		padding: 20px;
+    .login-wrapper {
+        max-width: 300px;
+        padding: 20px;
 
-		.auth-title {
-			font-size: 53px;
-		}
+        .auth-title {
+            font-size: 53px;
+        }
 
-		.auth_form {
-			.form-item {
-				margin-bottom: 30px;
+        .auth_form {
+            .form-item {
+                margin-bottom: 30px;
 
-				.input-field {
-					min-height: 47px;
-					font-size: 16px;
-				}
+                .input-field {
+                    min-height: 47px;
+                    font-size: 16px;
+                }
 
-				.password-icon {
-					svg {
-						width: 25px;
-						height: 25px;
-					}
-				}
+                .password-icon {
+                    svg {
+                        width: 25px;
+                        height: 25px;
+                    }
+                }
 
-				.email-icon {
-					top: 14px;
+                .email-icon {
+                    top: 14px;
 
-					svg {
-						width: 18px;
-						height: 18px;
-					}
-				}
-			}
-		}
+                    svg {
+                        width: 18px;
+                        height: 18px;
+                    }
+                }
+            }
+        }
 
-		.login-btn {
-			min-height: 47px;
-			font-size: 18px;
-			margin-top: 20px;
-		}
-	}
+        .login-btn {
+            min-height: 47px;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    }
 }
 
-@media screen and (max-width: 375px) {
-	.login-wrapper {
-		max-width: 270px;
+@media screen and (max-width: 510px) {
+    .main-container {
+        .dashboard-wrapper {
+            .dice-main-container {
+                margin: 30px auto;
 
-		.auth-title {
-			font-size: 45px;
-		}
+                .dice-container {
+                    //height: 500px;
 
-		.dice-animation {
-			div {
-				width: 100px;
-				height: 80px;
-			}
-		}
+                    .dice-wrapper {
+                        margin: 0;
 
-		.auth_form {
-			.form-item {
-				margin-bottom: 25px;
-			}
-		}
-	}
+                        .main-dice--width {
+                            width: 80px;
+                            height: 80px;
+
+                            .face {
+                                &::after {
+                                    width: 15px;
+                                    height: 15px;
+                                }
+                            }
+
+                            .front {
+                                transform: translateZ(40px);
+                            }
+
+                            .back {
+                                transform: rotateX(180deg) translateZ(40px);
+                            }
+
+                            .top {
+                                transform: rotateX(90deg) translateZ(40px);
+                            }
+
+                            .bottom {
+                                transform: rotateX(-90deg) translateZ(40px);
+                            }
+
+                            .right {
+                                transform: rotateY(90deg) translateZ(40px);
+                            }
+
+                            .left {
+                                transform: rotateY(-90deg) translateZ(40px);
+                            }
+                        }
+
+                        .dice-side-wrapper {
+                            flex-wrap: wrap;
+                            justify-content: center;
+                            width: 60%;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+
+            .header-wrapper {
+                .animation-wrapper {
+                    margin-top: 5px;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .setting-btn {
+                    margin-top: 5px;
+                    width: 45px;
+                    height: 45px;
+                    margin-right: 10px;
+                    i {
+                        font-size: 22px;
+                    }
+                }
+
+                .curve-wrapper {
+                    width: 230px;
+
+                    .curve-btn {
+                        width: 170px;
+                        font-size: $font-size-md;
+                    }
+                }
+            }
+
+            .btn-container {
+                .bet-wrapper {
+                    margin-left: 10px;
+                    .btn-title,
+                    .win-btn-title {
+                        margin-top: -27px;
+                        margin-bottom: 10px;
+                    }
+
+                    .bet-amount {
+                        width: calc(100% - 30px);
+                        height: 35px;
+                        font-size: $font-size-sm;
+                    }
+
+                    .minus {
+                        width: 40px;
+                        height: 30px;
+                        font-size: 18px;
+                        margin: 0 5px;
+                    }
+                }
+
+                .play-wrapper {
+                    //width: unset;
+                    .play-btn {
+                        width: 75px;
+                        height: 75px;
+                    }
+                }
+            }
+
+            .custom-btn {
+                border: 2px solid #80040a;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .main-container {
+        .dashboard-wrapper {
+            .header-wrapper {
+                .curve-wrapper {
+                    width: 165px;
+                    height: 50px;
+
+                    .curve-btn {
+                        width: 130px;
+                        height: 30px;
+                    }
+                }
+            }
+            .btn-container {
+                .bet-wrapper {
+                    .win-btn-title {
+                        margin-left: 35px;
+                    }
+                    .bet-amount {
+                        font-size: $font-size-xs;
+                    }
+                }
+                .play-wrapper {
+                    .play-btn {
+                        width: 52px;
+                        height: 52px;
+
+                        i {
+                            font-size: $font-size-sm;
+                        }
+                    }
+                }
+            }
+            .background-overlay {
+                max-width: calc(100% - 20px);
+            }
+
+            .dice-main-container {
+                .dice-container {
+                    .dice-wrapper {
+                        .dice-side-wrapper {
+                            width: 70%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .logout-modal {
+        .modal-dialog {
+            max-width: 280px;
+            .modal-content {
+                .modal-body {
+                    p {
+                        font-size: $font-size-browser-default;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .main-container {
+        .dashboard-wrapper {
+            .btn-container {
+                .bet-wrapper {
+                    .minus {
+                        width: 45px;
+                        font-size: 18px;
+                        padding: 0;
+                        height: 26px;
+                    }
+                }
+                .bet-amount {
+                    padding: 0 5px;
+                }
+            }
+        }
+    }
+
+    .login-wrapper {
+        max-width: 270px;
+
+        .auth-title {
+            font-size: 45px;
+        }
+
+        .dice-animation {
+            div {
+                width: 100px;
+                height: 80px;
+            }
+        }
+
+        .auth_form {
+            .form-item {
+                margin-bottom: 25px;
+            }
+        }
+    }
 }

@@ -2,7 +2,9 @@
 
 .main-container {
     .dashboard-wrapper {
+        height: 100vh;
         .header-wrapper {
+            height: 100px;
             .animation-wrapper {
                 width: 50px;
                 height: 50px;
@@ -12,7 +14,6 @@
             .setting-btn {
                 width: 60px;
                 height: 60px;
-                border: 5px solid $maroon;
             }
 
             .curve-wrapper {
@@ -32,31 +33,32 @@
         }
 
         .background-overlay {
-            max-width: 1200px;
+            position: relative;
+            max-width: calc(100% - 200px);
             margin: 0 auto;
             background: rgba($black, 0.5);
         }
 
         .dice-main-container {
+            position: relative;
+            height: calc(100vh - 337px);
             margin-bottom: 50px;
-            margin-top: 80px;
+            margin-top: 30px;
 
             .dice-container {
-                height: 600px;
-
                 .dice-wrapper {
                     display: grid;
                     place-items: center;
-                    height: 600px;
+                    height: 100%;
                     align-content: space-around;
-                    margin-bottom: -100px;
 
                     .dice {
                         width: 100px;
                         height: 100px;
                         transform-style: preserve-3d;
                         transition: 1s ease;
-                        transform: rotateY(185deg) rotateX(150deg) rotateZ(315deg);
+                        transform: rotateY(185deg) rotateX(150deg)
+                            rotateZ(315deg);
 
                         &--width {
                             width: 80px;
@@ -93,9 +95,11 @@
                             height: 100%;
                             border-radius: 15px;
                             transform-style: preserve-3d;
-                            background: linear-gradient(145deg,
-                                    #dddbd8,
-                                    $white );
+                            background: linear-gradient(
+                                145deg,
+                                #dddbd8,
+                                $white
+                            );
 
                             &::after {
                                 position: absolute;
@@ -128,25 +132,33 @@
                             }
 
                             &--background {
-                                box-shadow: 12px 12px 16px 0 rgb(255 255 255 / 30%) inset,
+                                box-shadow: 12px 12px 16px 0
+                                        rgb(255 255 255 / 30%) inset,
                                     -8px -8px 12px 0 rgb(0 0 0 / 25%) inset;
-                                background-image: linear-gradient(-90deg,
-                                        #c49f9f,
-                                        #808080);
+                                background-image: linear-gradient(
+                                    -90deg,
+                                    #c49f9f,
+                                    #808080
+                                );
                             }
 
                             &--active {
-                                box-shadow: 5px 6px 16px 0 rgba(255, 255, 255, 0.3) inset,
+                                box-shadow: 5px 6px 16px 0
+                                        rgba(255, 255, 255, 0.3) inset,
                                     -8px -8px 12px 0 rgba(0, 0, 0, 0.25) inset;
-                                background: linear-gradient(145deg,
-                                        #5fe8ff,
-                                        #006475);
+                                background: linear-gradient(
+                                    145deg,
+                                    #5fe8ff,
+                                    #006475
+                                );
                             }
 
                             &--win {
-                                background: linear-gradient(145deg,
-                                        #51ad2e,
-                                        #46cc22);
+                                background: linear-gradient(
+                                    145deg,
+                                    #51ad2e,
+                                    #46cc22
+                                );
                             }
                         }
 

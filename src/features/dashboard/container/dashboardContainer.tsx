@@ -143,7 +143,7 @@ const Dashboard = () => {
     const logOut = () => {
         dispatch(createAction(actionTypes.AUTH_LOGOUT));
 
-        notify('Admin successfully logged out.', 'success');
+        notify('User successfully logged out.', 'success');
     };
 
     const handleWallet = () => {
@@ -188,13 +188,18 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className='dice-main-container background-overlay border-radius--lg width-full flex'>
+                <div className='dice-main-container background-overlay border-radius--lg width-full flex z-index--1 '>
                     <div className='dice-container flex align-items--center justify-content--center width--full'>
-                        <div className='dice-wrapper border-radius--30'>
+                        <div
+                            className={`dice-wrapper border-radius--30  ${
+                                winPopup ? 'z-index--negative-1' : 'z-index--1'
+                            }`}>
                             <div
-                                className='dice position--relative'
+                                className='dice main-dice--width position--relative'
                                 style={{
                                     transform: transFormStyle,
+                                    WebkitTransform: transFormStyle,
+                                    WebkitAnimation: diceAnimation,
                                     animation: diceAnimation,
                                 }}>
                                 {dice.map((data) => (
@@ -236,7 +241,7 @@ const Dashboard = () => {
                 <div className='btn-container background-overlay border-radius--lg width--full flex align-items--center'>
                     <div className='bet-wrapper width--40 text--center'>
                         <p className='btn-title font-size--xxl mb--10'>BET</p>
-                        <div className='flex justify-content--end'>
+                        <div className='flex justify-content--end align-items--center'>
                             <button
                                 className={`minus custom-btn flex justify-content--center align-items--center mr--10 ${
                                     isPlay && 'disabled no-pointer-events'
@@ -314,7 +319,7 @@ const Dashboard = () => {
                     </div>
                 </CustomModal>
             )}
-            {winPopup && winPopup.length > 0 && (
+            {winPopup.length > 0 && (
                 <CustomModal
                     show={true}
                     handleClose={function (): void | undefined {
@@ -322,7 +327,7 @@ const Dashboard = () => {
                     }}
                     className='win-model'>
                     <div>
-                        <div className='dice-animation no--margin'>
+                        <div className='dice-animation no--margin z-index--2'>
                             <Lottie
                                 options={{
                                     animationData:
